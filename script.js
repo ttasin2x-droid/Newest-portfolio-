@@ -15,63 +15,114 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// --- SYSTEM MAINTENANCE CHECK (PROFESSIONAL ANIMATION) ---
+// --- ULTRA PREMIUM MAINTENANCE MODE ---
 const statusRef = ref(db, 'site_status');
 onValue(statusRef, (snapshot) => {
     const data = snapshot.val();
-    // Check if explicitly set to false (offline)
+    
     if (data && data.isLive === false) {
-        // Inject styles and HTML for the maintenance screen
         document.body.innerHTML = `
             <style>
-                @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap');
-                body { margin: 0; padding: 0; background: #0f172a; font-family: 'Outfit', sans-serif; overflow: hidden; height: 100vh; display: flex; justify-content: center; align-items: center; }
-                .m-container { text-align: center; position: relative; z-index: 10; padding: 20px; }
+                @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&display=swap');
                 
-                /* Icon Animation */
-                .gear-wrapper {
-                    position: relative; width: 120px; height: 120px; margin: 0 auto 30px;
-                    display: flex; justify-content: center; align-items: center;
-                }
-                .gear-icon {
-                    font-size: 5rem; color: #3b82f6; 
-                    animation: spin 4s linear infinite;
-                    z-index: 2; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
-                }
-                .glow-effect {
-                    position: absolute; width: 100%; height: 100%;
-                    background: rgba(59, 130, 246, 0.15); border-radius: 50%;
-                    filter: blur(20px); animation: pulse 2.5s ease-in-out infinite;
-                    z-index: 1;
+                body { 
+                    margin: 0; padding: 0; 
+                    background: linear-gradient(-45deg, #020617, #0f172a, #1e1b4b, #0f172a);
+                    background-size: 400% 400%;
+                    animation: gradientBG 15s ease infinite;
+                    font-family: 'Outfit', sans-serif; 
+                    height: 100vh; display: flex; 
+                    justify-content: center; align-items: center; 
+                    overflow: hidden; color: white;
                 }
 
-                /* Text Styling */
-                h1 { color: white; font-size: 2.5rem; margin: 0 0 10px; font-weight: 700; letter-spacing: 1px; }
-                p { color: #94a3b8; font-size: 1.1rem; line-height: 1.6; margin: 0; }
-                .status-badge {
-                    display: inline-block; margin-top: 25px; padding: 8px 20px;
-                    background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 50px; color: #60a5fa; font-size: 0.9rem; font-weight: 600;
-                    letter-spacing: 0.5px;
+                /* Glassmorphism Card */
+                .glass-card {
+                    background: rgba(255, 255, 255, 0.03);
+                    backdrop-filter: blur(20px);
+                    -webkit-backdrop-filter: blur(20px);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    padding: 50px 40px;
+                    border-radius: 30px;
+                    text-align: center;
+                    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+                    max-width: 450px; width: 90%;
+                    position: relative; overflow: hidden;
                 }
 
-                /* Keyframes */
+                /* Shine Effect on Card */
+                .glass-card::before {
+                    content: ''; position: absolute; top: 0; left: -100%;
+                    width: 50%; height: 100%;
+                    background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+                    transform: skewX(-25deg);
+                    animation: shine 6s infinite;
+                }
+
+                /* Double Ring Loader */
+                .loader-container { position: relative; width: 100px; height: 100px; margin: 0 auto 30px; display: flex; justify-content: center; align-items: center; }
+                .ring {
+                    position: absolute; border-radius: 50%; border: 3px solid transparent;
+                }
+                .ring-1 {
+                    width: 100%; height: 100%;
+                    border-top: 3px solid #3b82f6; border-left: 3px solid #3b82f6;
+                    animation: spin 2s linear infinite;
+                }
+                .ring-2 {
+                    width: 70%; height: 70%;
+                    border-bottom: 3px solid #ec4899; border-right: 3px solid #ec4899;
+                    animation: spin-reverse 1.5s linear infinite;
+                }
+                .icon-center { font-size: 1.8rem; color: white; animation: pulse 2s ease-in-out infinite; }
+
+                /* Typography */
+                h1 { 
+                    font-size: 2.2rem; margin: 0 0 10px; font-weight: 800; 
+                    background: linear-gradient(to right, #fff, #94a3b8);
+                    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                }
+                p { color: #94a3b8; font-size: 1rem; line-height: 1.6; font-weight: 300; margin-bottom: 30px; }
+
+                /* Progress Bar */
+                .progress-wrapper {
+                    width: 100%; height: 4px; background: rgba(255,255,255,0.1);
+                    border-radius: 10px; overflow: hidden; margin-top: 20px;
+                }
+                .progress-bar {
+                    width: 50%; height: 100%;
+                    background: linear-gradient(90deg, #3b82f6, #ec4899);
+                    animation: loading 2s ease-in-out infinite;
+                    border-radius: 10px;
+                }
+
+                /* Animations */
+                @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
                 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-                @keyframes pulse { 0% { transform: scale(0.8); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.8); opacity: 0.5; } }
+                @keyframes spin-reverse { 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); } }
+                @keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
+                @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+                @keyframes loading { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
+
             </style>
 
-            <div class="m-container">
-                <div class="gear-wrapper">
-                    <div class="glow-effect"></div>
-                    <i class="fas fa-cog gear-icon"></i>
+            <div class="glass-card">
+                <div class="loader-container">
+                    <div class="ring ring-1"></div>
+                    <div class="ring ring-2"></div>
+                    <i class="fas fa-wrench icon-center"></i>
                 </div>
-                <h1>System Under Maintenance</h1>
-                <p>We are currently upgrading the portfolio to serve you better.<br>Please check back shortly.</p>
-                <div class="status-badge">● Status: Offline</div>
+                <h1>System Upgrade</h1>
+                <p>We're crafting a better experience.<br>The portfolio is currently offline for scheduled maintenance.</p>
+                
+                <div style="font-size: 0.8rem; color: #64748b; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;">Restoring System...</div>
+                <div class="progress-wrapper">
+                    <div class="progress-bar"></div>
+                </div>
             </div>
         `;
-        
-        // Ensure FontAwesome is loaded if it was removed with body replacement
+
+        // Ensure FontAwesome Loads
         if (!document.querySelector('link[href*="font-awesome"]')) {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
