@@ -5,14 +5,46 @@ const firebaseConfig = { apiKey: "AIzaSyDNtkM7hLeIsD2HzWxQKJFH8fsXOVKrv18", auth
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// --- MAINTENANCE MODE (WHITE GLOSSY) ---
+// --- 1. PREMIUM SITE PRELOADER (NEW) ---
+// This injects the preloader HTML immediately
+const preloaderHTML = `
+<div id="site-preloader" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#ffffff; z-index:99999; display:flex; flex-direction:column; justify-content:center; align-items:center; transition:opacity 0.6s ease-out;">
+    <div class="loader-pulse"></div>
+    <div style="margin-top:20px; font-family:'Outfit', sans-serif; color:#64748b; font-size:0.9rem; letter-spacing:2px; font-weight:600; text-transform:uppercase; animation:fadeIn 1s infinite alternate;">Loading</div>
+    <style>
+        .loader-pulse {
+            position: relative; width: 60px; height: 60px;
+            background: #2563eb; border-radius: 50%;
+            animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        .loader-pulse::after {
+            content: ''; position: absolute; left: 0; top: 0;
+            width: 100%; height: 100%; background: #fff; border-radius: 50%;
+            animation: pulse-dot 1.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.4s infinite;
+        }
+        @keyframes pulse-ring { 0% { transform: scale(0.33); } 80%, 100% { opacity: 0; } }
+        @keyframes pulse-dot { 0% { transform: scale(0.8); } 50% { transform: scale(1); } 100% { transform: scale(0.8); } }
+        @keyframes fadeIn { from { opacity: 0.5; } to { opacity: 1; } }
+    </style>
+</div>
+`;
+if (!document.getElementById('site-preloader')) {
+    document.body.insertAdjacentHTML('afterbegin', preloaderHTML);
+}
+
+// --- MAINTENANCE MODE ---
 let maintenanceInterval; 
 onValue(ref(db, 'site_status'), (snapshot) => {
     const data = snapshot.val();
     if (maintenanceInterval) clearInterval(maintenanceInterval);
     const isAdminBypass = localStorage.getItem('admin_bypass') === 'true';
 
+    // If Maintenance is ON and NOT Admin
     if (data && data.isLive === false && !isAdminBypass) {
+        // Remove preloader immediately if maintenance is active (since maintenance page replaces body)
+        const pl = document.getElementById('site-preloader');
+        if(pl) pl.remove();
+
         const reason = data.reason || "System Upgrade";
         let retTime = data.returnTime;
         let isTimer = typeof retTime === 'number';
@@ -47,35 +79,15 @@ onValue(ref(db, 'site_status'), (snapshot) => {
     }
 });
 
-// --- DYNAMIC SITE CONTENT (TEXTS & LINKS) ---
+// --- DYNAMIC SITE CONTENT ---
 onValue(ref(db, 'site_content'), (snap) => {
     const d = snap.val();
     if(d) {
-        // Safe check function
         const setTxt = (id, val) => { const el = document.getElementById(id); if(el && val) el.innerText = val; };
         const setHref = (id, val) => { const el = document.getElementById(id); if(el && val) el.href = val; };
-
-        // Hero
-        if(d.hero) {
-            setTxt('heroSubtitle', d.hero.subtitle);
-            setTxt('heroTitle', d.hero.title);
-            setTxt('heroDesc', d.hero.desc);
-        }
-        // About
-        if(d.about) {
-            setTxt('aboutTitle', d.about.title);
-            setTxt('aboutSubtitle', d.about.subtitle);
-            setTxt('aboutDesc', d.about.desc);
-            setTxt('aboutLoc', d.about.location);
-            setTxt('aboutPhone', d.about.phone);
-            setTxt('aboutEmail', d.about.email);
-        }
-        // Links
-        if(d.links) {
-            setHref('linkFB', d.links.fb);
-            setHref('linkInsta', d.links.insta);
-            setHref('linkWA', d.links.wa);
-        }
+        if(d.hero) { setTxt('heroSubtitle', d.hero.subtitle); setTxt('heroTitle', d.hero.title); setTxt('heroDesc', d.hero.desc); }
+        if(d.about) { setTxt('aboutTitle', d.about.title); setTxt('aboutSubtitle', d.about.subtitle); setTxt('aboutDesc', d.about.desc); setTxt('aboutLoc', d.about.location); setTxt('aboutPhone', d.about.phone); setTxt('aboutEmail', d.about.email); }
+        if(d.links) { setHref('linkFB', d.links.fb); setHref('linkInsta', d.links.insta); setHref('linkWA', d.links.wa); }
     }
 });
 
@@ -97,6 +109,19 @@ window.viewLessImages = () => { const items = document.querySelectorAll('.galler
 window.goToPage = (url) => { document.getElementById('pageTransition').classList.add('active'); setTimeout(() => { window.location.href = url; }, 500); }
 window.closeLightbox = (event) => { if (event.target.id === 'lightbox' || event.target.tagName === 'I') { document.getElementById('lightbox').classList.remove('active'); document.body.style.overflow = 'auto'; } }
 window.scrollToTop = () => { window.scrollTo({top: 0, behavior: 'smooth'}); }
-window.onload = function() { createSoftSnowfall(); if(typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true }); };
+
+// --- HIDE PRELOADER ON LOAD ---
+window.onload = function() { 
+    createSoftSnowfall(); 
+    if(typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true }); 
+
+    // Fade out preloader
+    const loader = document.getElementById('site-preloader');
+    if(loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.remove(), 600); // Remove after fade
+    }
+};
+
 window.onscroll = function() { const btn = document.getElementById("backToTop"); if(btn) btn.style.display = (window.scrollY > 300) ? "flex" : "none"; };
 function createSoftSnowfall() { const container = document.getElementById('weather-container'); if(!container) return; for (let i = 0; i < 35; i++) { const flake = document.createElement('div'); flake.classList.add('snowflake'); flake.innerHTML = '❄'; flake.style.left = Math.random() * 100 + 'vw'; flake.style.animationDuration = `${Math.random() * 10 + 5}s, ${Math.random() * 4 + 3}s`; flake.style.animationDelay = Math.random() * 5 + 's'; container.appendChild(flake); } setTimeout(() => { container.style.opacity = '0'; }, 6000); }
