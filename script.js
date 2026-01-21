@@ -37,17 +37,20 @@ if (!localStorage.getItem('admin_bypass')) {
                 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua)) {
                     deviceType = "Mobile";
                 }
+
                 const success = data.success !== false;
+
                 push(ref(db, 'visit_logs'), {
                     ip: data.ip || 'Unknown',
                     city: success ? data.city : 'Unknown City',
                     country: success ? data.country : 'Unknown Country',
-                    country_code: success ? data.country_code.toLowerCase() : 'bd', 
+                    country_code: success ? data.country_code.toLowerCase() : 'bd',
                     org: success ? (data.connection ? data.connection.org : data.isp) : 'Unknown ISP',
                     device_type: deviceType,
                     raw_agent: ua,
                     time: new Date().toLocaleString()
                 });
+                
                 sessionStorage.setItem('logged_device', 'true');
             })
             .catch(error => {
@@ -127,10 +130,42 @@ onValue(ref(db, 'site_content'), (snap) => {
 // --- STANDARD FEATURES ---
 onValue(ref(db, 'hero'), (snap) => { if(snap.val()?.imageUrl) document.getElementById('dynamicHeroImg').src = snap.val().imageUrl; });
 onValue(ref(db, 'profile'), (snap) => { if(snap.val()?.imageUrl) document.getElementById('dynamicProfileImg').src = snap.val().imageUrl; });
+
+// 1. HOME WORKS
 const galleryGrid = document.getElementById('galleryGrid');
 if(galleryGrid) { onValue(ref(db, 'home_works'), (snap) => { const data = snap.val(); galleryGrid.innerHTML = ""; if(data) { const images = Object.values(data).reverse(); images.forEach((item, index) => { const div = document.createElement('div'); div.className = "gallery-item"; div.setAttribute('data-aos', 'fade-up'); div.setAttribute('data-aos-delay', (index % 4) * 150); div.setAttribute('onclick', `window.openLightboxFromURL('${item.url}')`); div.innerHTML = `<img src="${item.url}" loading="lazy"><div class="overlay"><i class="fas fa-expand"></i></div>`; galleryGrid.appendChild(div); }); initGalleryLogic(); setTimeout(() => { if(typeof AOS !== 'undefined') AOS.refreshHard(); }, 600); } }); }
+
+// 2. SDGs
 const sdgGrid = document.getElementById('sdgGrid');
 if(sdgGrid) { onValue(ref(db, 'sdgs'), (snap) => { const data = snap.val(); sdgGrid.innerHTML = ""; if(data) Object.values(data).reverse().forEach((item, index) => { sdgGrid.innerHTML += ` <a href="${item.link}" target="_blank" class="sdg-card" data-aos="fade-up" data-aos-delay="${(index % 3) * 100}"> <div class="sdg-img"><img src="${item.image}"></div> <div class="sdg-text"><h3>${item.title}</h3></div> </a>`; }); }); }
+
+// --- PHOTOGRAPHY BENTO GRID (NEW) ---
+const photoGrid = document.getElementById('photoGrid');
+if (photoGrid) {
+    onValue(ref(db, 'photography'), (snap) => {
+        const data = snap.val();
+        if (data) {
+            // Mapping CSS classes to array index
+            const classMap = ['b-main', 'b-wide-top', 'b-wide-bottom', 'b-box-1', 'b-box-2'];
+            const images = Object.values(data).slice(0, 5); // Take first 5 images
+
+            images.forEach((item, index) => {
+                if (index < classMap.length) {
+                    const box = photoGrid.querySelector(`.${classMap[index]} .b-content`);
+                    if (box) {
+                        // Replace Placeholder with Image
+                        box.innerHTML = `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover; display:block;" alt="Photo">`;
+                        // Enable Lightbox click
+                        box.parentElement.setAttribute('onclick', `window.openLightboxFromURL('${item.url}')`);
+                        box.parentElement.style.cursor = 'pointer';
+                    }
+                }
+            });
+        }
+    });
+}
+
+// --- HELPER FUNCTIONS ---
 window.openLightboxFromURL = (url) => { const lb = document.getElementById('lightbox'); document.getElementById('lightbox-img').src = url; lb.classList.add('active'); document.body.style.overflow = 'hidden'; }
 window.openModal = (modalId) => { document.getElementById(modalId).style.display = 'flex'; }
 window.closeModal = (event, modalId) => { if (event.target.id === modalId || event.target.tagName === 'BUTTON') { document.getElementById(modalId).style.display = 'none'; } }
@@ -149,23 +184,6 @@ window.onload = function() {
 
     const loader = document.getElementById('site-preloader');
     if(loader) { loader.style.opacity = '0'; setTimeout(() => loader.remove(), 600); }
-
-    // --- NEW: PHOTOGRAPHY CAMERA BUTTON LOGIC ---
-    const camBtn = document.getElementById('cameraBtn');
-    if(camBtn) {
-        camBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const btn = this;
-            if (!btn.classList.contains('animate')) {
-                btn.classList.add('animate');
-                // 4 সেকেন্ড পর পেজ রিডাইরেক্ট হবে
-                setTimeout(() => {
-                    // এখানে তোমার ফটোগ্রাফি পেজের লিংক দাও। উদাহরণস্বরূপ 'photography.html'
-                    window.location.href = "photography.html"; 
-                }, 4000);
-            }
-        });
-    }
 };
 
 window.onscroll = function() { const btn = document.getElementById("backToTop"); if(btn) btn.style.display = (window.scrollY > 300) ? "flex" : "none"; };
