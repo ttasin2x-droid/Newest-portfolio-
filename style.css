@@ -138,11 +138,22 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     display: none; /* JS toggles this */
 }
 
-.gallery-item.visible { display: block; }
-.gallery-item.animate-custom { animation: smoothFadeUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
-@keyframes smoothFadeUp { 0% { opacity: 0; transform: translateY(40px); } 100% { opacity: 1; transform: translateY(0); } }
+.gallery-item.visible { 
+    display: block; 
+}
+
+/* Load More Animation */
+.gallery-item.animate-custom {
+    animation: smoothFadeUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+@keyframes smoothFadeUp {
+    0% { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
 
 .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s ease; }
+
 .overlay {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(15, 23, 42, 0.4); opacity: 0; transition: 0.3s;
@@ -157,7 +168,114 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 .gallery-item:hover img { transform: scale(1.1); }
 .gallery-item:hover .overlay { opacity: 1; }
 .gallery-item:hover .overlay i { transform: scale(1); }
+
 .load-more-container { text-align: center; margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+
+/* --- BENTO GRID PHOTOGRAPHY (NEW) --- */
+.bento-wrapper {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.bento-grid {
+    display: grid;
+    /* 5x5 Grid Definition */
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 15px;
+    height: 600px; /* Fixed height required for complex row spanning */
+}
+
+.bento-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    border: 1px solid rgba(0,0,0,0.05);
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bento-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Placeholder Styling */
+.bento-card .b-content {
+    width: 100%;
+    height: 100%;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.placeholder-icon {
+    font-size: 2rem;
+    color: #cbd5e1;
+}
+
+/* 1. Main Feature (Left Vertical) - Spans 2 cols, 5 rows */
+.b-main {
+    grid-column: span 2;
+    grid-row: span 5;
+    background: #f1f5f9;
+}
+
+/* 2. Top Middle - Spans 2 cols, 3 rows */
+.b-wide-top {
+    grid-column: span 2;
+    grid-row: span 3;
+    grid-column-start: 3;
+}
+
+/* 3. Bottom Middle - Spans 2 cols, 2 rows */
+.b-wide-bottom {
+    grid-column: span 2;
+    grid-row: span 2;
+    grid-column-start: 3;
+    grid-row-start: 4;
+}
+
+/* 4. Top Right - Spans 1 col, 2 rows */
+.b-box-1 {
+    grid-column-start: 5;
+    grid-row: span 2;
+    grid-row-start: 1;
+}
+
+/* 5. Middle Right - Spans 1 col, 2 rows */
+.b-box-2 {
+    grid-column-start: 5;
+    grid-row: span 2;
+    grid-row-start: 3;
+}
+
+/* 6. Bottom Right - Spans 1 col, 1 row (Accent Button) */
+.b-box-3 {
+    grid-column-start: 5;
+    grid-row-start: 5;
+    background: var(--primary-color);
+    color: white;
+}
+.b-box-3:hover {
+    background: var(--accent-color);
+}
+
+.b-link-icon {
+    color: white;
+    font-size: 1.2rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 /* --- OTHER SECTIONS --- */
 .promo-card {
@@ -205,156 +323,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 .modal-btn:hover { background: var(--accent-color); color: white; }
 @keyframes fadeIn { from{opacity:0; transform: scale(0.9);} to{opacity:1; transform: scale(1);} }
 
-/* =========================================
-   PHOTOGRAPHY SECTION & CAMERA BUTTON (FIXED)
-   ========================================= */
-:root {
-    --pg-bg: #2c2c2c;
-    --cam-purple-light: #8e72fa;
-    --cam-purple-dark: #6b4af0;
-    --cam-fold: #a78bfa; 
-}
-
-/* --- Container Setup --- */
-.photo-grid-wrapper {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* Desktop: 5 Cols */
-    grid-template-rows: repeat(5, 1fr);    /* Desktop: 5 Rows */
-    gap: 15px;
-    width: 100%;
-    max-width: 1000px;
-    aspect-ratio: 16 / 10; 
-    margin: 0 auto;
-}
-
-/* --- Common Item Style --- */
-.pg-item {
-    border-radius: 12px;
-    overflow: hidden;
-    position: relative;
-    background: var(--pg-bg);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    width: 100%; height: 100%;
-}
-
-.pg-item img {
-    width: 100%; height: 100%; object-fit: cover;
-    display: block; transition: transform 0.6s ease;
-}
-.pg-item:not(.pg-6-btn):hover img { transform: scale(1.1); }
-
-/* --- Desktop Layout --- */
-.pg-1 { grid-column: 1 / span 2; grid-row: 1 / span 5; }
-.pg-2 { grid-column: 3 / span 2; grid-row: 1 / span 3; }
-.pg-3 { grid-column: 3 / span 2; grid-row: 4 / span 2; }
-.pg-4 { grid-column: 5 / span 1; grid-row: 1 / span 2; }
-.pg-5 { grid-column: 5 / span 1; grid-row: 3 / span 2; }
-
-/* Button Position */
-.pg-6-btn { 
-    grid-column: 5 / span 1; 
-    grid-row: 5 / span 1; 
-    display: flex; justify-content: center; align-items: center; 
-    background: transparent !important; box-shadow: none !important; 
-    overflow: visible !important;
-}
-
-/* --- CAMERA BUTTON STYLES --- */
-.cam-btn {
-    -webkit-appearance: none; appearance: none; border: 0;
-    position: relative; width: 100%; height: 100%;
-    min-height: 100px;
-    padding: 0; outline: none; cursor: pointer;
-    border-radius: 12px; overflow: hidden;
-    background: linear-gradient(90deg, var(--cam-purple-dark), var(--cam-purple-light));
-    box-shadow: 0 4px 15px rgba(107, 74, 240, 0.4);
-    transition: all 0.3s ease;
-}
-.cam-btn:active { transform: scale(0.98); }
-
-/* Fold Effect */
-.fold-cut {
-    position: absolute; top: -1px; right: -1px;
-    border-style: solid; border-width: 0 30px 30px 0; 
-    border-color: transparent var(--bg-color) transparent transparent; 
-    z-index: 20; transition: all 0.5s ease; pointer-events: none;
-}
-.fold-flap {
-    position: absolute; top: 0; right: 0; width: 0; height: 0;
-    border-style: solid; border-width: 30px 0 0 30px; 
-    border-color: transparent transparent transparent var(--cam-fold);
-    filter: drop-shadow(-2px 2px 2px rgba(0,0,0,0.3));
-    z-index: 21; transition: all 0.5s ease; transform-origin: top right;
-}
-.cam-btn:hover .fold-flap, .cam-btn.animate .fold-flap { border-width: 0; }
-.cam-btn:hover .fold-cut, .cam-btn.animate .fold-cut { border-width: 0; }
-
-/* Particles */
-.particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
-.dot {
-    position: absolute; width: 3px; height: 3px;
-    background: rgba(255, 255, 255, 0.6); border-radius: 50%;
-    bottom: -10px; opacity: 0; animation: rise 3s infinite ease-in;
-}
-@keyframes rise { 0% { transform: translateY(0); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: translateY(-60px); opacity: 0; } }
-.dot:nth-child(1) { left: 15%; animation-duration: 2s; }
-.dot:nth-child(2) { left: 35%; animation-duration: 3.5s; width: 2px; }
-.dot:nth-child(3) { left: 65%; animation-duration: 2.8s; animation-delay: 0.5s; }
-.dot:nth-child(4) { left: 85%; animation-duration: 3.2s; animation-delay: 1s; }
-
-/* Labels */
-.cam-btn span.label {
-    position: absolute; left: 0; right: 0; top: 0; bottom: 0;
-    display: flex; justify-content: center; align-items: center;
-    font-size: 0.9rem; font-weight: 600; color: white; 
-    z-index: 10; transition: 0.4s ease; text-transform: uppercase;
-}
-.cam-btn span.success { opacity: 0; transform: translateY(20px); gap: 8px; }
-.cam-btn.animate span.default { opacity: 0; transform: translateY(-20px); }
-.cam-btn.animate span.success { opacity: 1; transform: translateY(0); transition-delay: 3.8s; }
-
-/* Camera Graphics */
-.camera-group { position: absolute; width: 40px; height: 30px; top: 50%; left: -60px; transform: translateY(-50%); z-index: 15; }
-.cam-body {
-    width: 36px; height: 24px; background: linear-gradient(145deg, #333, #000);
-    border-radius: 4px; position: absolute; top: 4px; left: 0;
-    box-shadow: 2px 3px 6px rgba(0,0,0,0.3);
-}
-.cam-top {
-    width: 16px; height: 4px; background: #222;
-    position: absolute; top: 0; left: 10px; border-radius: 3px 3px 0 0;
-}
-.cam-lens {
-    width: 18px; height: 18px; background: radial-gradient(circle at 30% 30%, #444, #000);
-    border: 1.5px solid #555; border-radius: 50%;
-    position: absolute; top: 7px; left: 9px;
-}
-.cam-lens::after {
-    content: ''; position: absolute; width: 6px; height: 6px;
-    background: rgba(138, 43, 226, 0.7); border-radius: 50%;
-    top: 2px; right: 2px; filter: blur(1px);
-}
-.cam-flash { width: 4px; height: 3px; background: #fff; position: absolute; top: 5px; right: 4px; }
-.flash-overlay {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: white; opacity: 0; pointer-events: none; z-index: 30; mix-blend-mode: overlay;
-}
-
-/* Animation Keyframes */
-.cam-btn.animate .camera-group { animation: driveCamera 4s ease-in-out forwards; }
-.cam-btn.animate .flash-overlay { animation: flashEffect 4s ease-in-out forwards; }
-
-@keyframes driveCamera {
-    0% { left: -60px; transform: translateY(-50%) scale(0.8) rotate(-10deg); }
-    40% { left: 50%; margin-left: -20px; transform: translateY(-50%) scale(1.1) rotate(0deg); } 
-    50% { left: 50%; margin-left: -20px; transform: translateY(-50%) scale(1.1); }
-    100% { left: 120%; transform: translateY(-50%) scale(0.8) rotate(10deg); } 
-}
-@keyframes flashEffect { 0%, 45% { opacity: 0; } 48% { opacity: 1; } 55% { opacity: 0; } }
-
-/* =========================================
-   RESPONSIVE (Mobile Fixes)
-   ========================================= */
+/* --- RESPONSIVE --- */
 @media (max-width: 900px) {
     .hero-text h1 { font-size: 3rem; }
     .hero-card-main { height: auto; flex-direction: column-reverse; padding-bottom: 0; }
@@ -367,32 +336,30 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .promo-content { width: 100%; padding: 25px; text-align: center; }
     .info-item { justify-content: center; }
     
+    /* -- FIXED: Mobile Vertical Layout for SDGs -- */
     .sdg-grid { grid-template-columns: 1fr; gap: 25px; padding: 0 15px; }
     .sdg-card { max-width: 100%; }
+    /* -- Works Grid Mobile -- */
     .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+}
 
-    /* --- PHOTOGRAPHY GRID FIX --- */
-    .photo-grid-wrapper {
-        grid-template-columns: repeat(2, 1fr); /* 2 Cols */
-        grid-template-rows: auto;
-        aspect-ratio: auto;
+@media (max-width: 768px) {
+    /* --- BENTO GRID MOBILE --- */
+    .bento-grid {
+        display: flex;
+        flex-direction: column;
         height: auto;
     }
     
-    .pg-1, .pg-2, .pg-3, .pg-4, .pg-5, .pg-6-btn {
-        grid-column: auto; grid-row: auto; min-height: 200px;
-    }
-    .pg-1 { grid-column: span 2; height: 300px; }
-    .pg-6-btn { grid-column: span 2; min-height: 80px; }
-    .cam-btn span.label { font-size: 0.8rem; }
+    /* Mobile specific heights to look good */
+    .b-main { height: 300px; }
+    .b-wide-top { height: 200px; }
+    .b-wide-bottom { height: 180px; }
+    .b-box-1, .b-box-2 { height: 150px; display: none; /* Hiding smaller boxes on mobile to save space, remove this if you want them shown */ }
+    .b-box-3 { height: 60px; border-radius: 50px; } /* Turn the button into a bar on mobile */
 }
 
 @media (max-width: 600px) {
     .gallery-grid { grid-template-columns: 1fr; }
     .sdg-grid { grid-template-columns: 1fr; }
-    
-    /* --- PHOTOGRAPHY GRID SMALL MOBILE --- */
-    .photo-grid-wrapper { grid-template-columns: 1fr; }
-    .pg-1, .pg-2, .pg-3, .pg-4, .pg-5, .pg-6-btn { grid-column: span 1; min-height: 220px; }
-    .pg-6-btn { min-height: 70px; }
 }
