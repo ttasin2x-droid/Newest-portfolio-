@@ -81,21 +81,35 @@
             <div class="sdg-grid" id="photoGrid"></div>
 
             <div class="load-more-container" style="margin-top: 40px;">
-                <button onclick="goToPage('photography.html')" class="btn-magic" data-aos="fade-up">
-                    <span class="fold"></span>
+                <button class="btn-camera" onclick="triggerCameraAnim(this)" data-aos="fade-up">
                     
-                    <div class="points_wrapper">
-                        <i class="point"></i><i class="point"></i><i class="point"></i><i class="point"></i>
-                        <i class="point"></i><i class="point"></i><i class="point"></i><i class="point"></i>
-                        <i class="point"></i><i class="point"></i>
+                    <div class="cam-fold-cut"></div>
+                    <div class="cam-fold-flap"></div>
+
+                    <div class="cam-particles">
+                        <div class="c-dot"></div><div class="c-dot"></div>
+                        <div class="c-dot"></div><div class="c-dot"></div>
                     </div>
 
-                    <span class="inner">
-                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5">
-                            <polyline points="13.18 1.37 13.18 9.64 21.45 9.64 10.82 22.63 10.82 14.36 2.55 14.36 13.18 1.37"></polyline>
+                    <span class="cam-label default">View Gallery</span>
+                    <span class="cam-label success">
+                        Opening...
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
-                        View Gallery
                     </span>
+
+                    <div class="camera-group">
+                        <div class="cam-top"></div>
+                        <div class="cam-body">
+                            <div class="cam-flash"></div>
+                        </div>
+                        <div class="cam-lens"></div>
+                    </div>
+
+                    <div class="flash-overlay"></div>
+
                 </button>
             </div>
         </div>
