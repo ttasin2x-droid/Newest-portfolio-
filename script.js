@@ -139,28 +139,27 @@ if(galleryGrid) { onValue(ref(db, 'home_works'), (snap) => { const data = snap.v
 const sdgGrid = document.getElementById('sdgGrid');
 if(sdgGrid) { onValue(ref(db, 'sdgs'), (snap) => { const data = snap.val(); sdgGrid.innerHTML = ""; if(data) Object.values(data).reverse().forEach((item, index) => { sdgGrid.innerHTML += ` <a href="${item.link}" target="_blank" class="sdg-card" data-aos="fade-up" data-aos-delay="${(index % 3) * 100}"> <div class="sdg-img"><img src="${item.image}"></div> <div class="sdg-text"><h3>${item.title}</h3></div> </a>`; }); }); }
 
-// --- PHOTOGRAPHY BENTO GRID (NEW) ---
+// 3. PHOTOGRAPHY (SDG STYLE)
 const photoGrid = document.getElementById('photoGrid');
 if (photoGrid) {
     onValue(ref(db, 'photography'), (snap) => {
         const data = snap.val();
+        photoGrid.innerHTML = ""; // Clear existing content
         if (data) {
-            // Mapping CSS classes to array index
-            const classMap = ['b-main', 'b-wide-top', 'b-wide-bottom', 'b-box-1', 'b-box-2'];
-            const images = Object.values(data).slice(0, 5); // Take first 5 images
-
+            // Reverse to show new photos first and take first 3 photos
+            const images = Object.values(data).reverse().slice(0, 3); 
+            
             images.forEach((item, index) => {
-                if (index < classMap.length) {
-                    const box = photoGrid.querySelector(`.${classMap[index]} .b-content`);
-                    if (box) {
-                        // Replace Placeholder with Image
-                        box.innerHTML = `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover; display:block;" alt="Photo">`;
-                        // Enable Lightbox click
-                        box.parentElement.setAttribute('onclick', `window.openLightboxFromURL('${item.url}')`);
-                        box.parentElement.style.cursor = 'pointer';
-                    }
-                }
+                photoGrid.innerHTML += `
+                <div class="sdg-card" data-aos="fade-up" data-aos-delay="${index * 100}" onclick="window.openLightboxFromURL('${item.url}')" style="cursor: pointer;">
+                    <div class="sdg-img" style="height: 250px;">
+                        <img src="${item.url}" style="width: 100%; height: 100%; object-fit: cover; transition: 0.5s;">
+                    </div>
+                </div>`;
             });
+        } else {
+            // Optional: Placeholder if no data
+            photoGrid.innerHTML = `<p style="text-align:center; grid-column: 1/-1; color: #999;">Loading Photos...</p>`;
         }
     });
 }
