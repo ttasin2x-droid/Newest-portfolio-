@@ -21,7 +21,7 @@ window.addEventListener('scroll', () => {
     scrollBar.style.width = scrolled + "%";
 });
 
-// --- 3. ADVANCED VISITOR TRACKING (FIXED LOCATION) ---
+// --- 3. ADVANCED VISITOR TRACKING ---
 if (!localStorage.getItem('admin_bypass')) {
     const visitRef = ref(db, 'site_stats/visits');
     runTransaction(visitRef, (currentVisits) => {
@@ -37,20 +37,17 @@ if (!localStorage.getItem('admin_bypass')) {
                 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua)) {
                     deviceType = "Mobile";
                 }
-
                 const success = data.success !== false;
-
                 push(ref(db, 'visit_logs'), {
                     ip: data.ip || 'Unknown',
                     city: success ? data.city : 'Unknown City',
                     country: success ? data.country : 'Unknown Country',
-                    country_code: success ? data.country_code.toLowerCase() : 'bd',
+                    country_code: success ? data.country_code.toLowerCase() : 'bd', 
                     org: success ? (data.connection ? data.connection.org : data.isp) : 'Unknown ISP',
                     device_type: deviceType,
                     raw_agent: ua,
                     time: new Date().toLocaleString()
                 });
-                
                 sessionStorage.setItem('logged_device', 'true');
             })
             .catch(error => {
@@ -152,20 +149,24 @@ window.onload = function() {
 
     const loader = document.getElementById('site-preloader');
     if(loader) { loader.style.opacity = '0'; setTimeout(() => loader.remove(), 600); }
+
+    // --- NEW: PHOTOGRAPHY CAMERA BUTTON LOGIC ---
+    const camBtn = document.getElementById('cameraBtn');
+    if(camBtn) {
+        camBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const btn = this;
+            if (!btn.classList.contains('animate')) {
+                btn.classList.add('animate');
+                // 4 সেকেন্ড পর পেজ রিডাইরেক্ট হবে
+                setTimeout(() => {
+                    // এখানে তোমার ফটোগ্রাফি পেজের লিংক দাও। উদাহরণস্বরূপ 'photography.html'
+                    window.location.href = "photography.html"; 
+                }, 4000);
+            }
+        });
+    }
 };
 
 window.onscroll = function() { const btn = document.getElementById("backToTop"); if(btn) btn.style.display = (window.scrollY > 300) ? "flex" : "none"; };
 function createSoftSnowfall() { const container = document.getElementById('weather-container'); if(!container) return; for (let i = 0; i < 35; i++) { const flake = document.createElement('div'); flake.classList.add('snowflake'); flake.innerHTML = '❄'; flake.style.left = Math.random() * 100 + 'vw'; flake.style.animationDuration = `${Math.random() * 10 + 5}s, ${Math.random() * 4 + 3}s`; flake.style.animationDelay = Math.random() * 5 + 's'; container.appendChild(flake); } setTimeout(() => { container.style.opacity = '0'; }, 6000); }
-
-// --- PHOTOGRAPHY BUTTON LOGIC (REDIRECT) ---
-const photoBtn = document.getElementById('photoBtn');
-if (photoBtn) {
-    photoBtn.addEventListener('click', function(e) {
-        if (!this.classList.contains('animate')) {
-            this.classList.add('animate');
-            setTimeout(() => {
-                window.location.href = "home.html"; 
-            }, 3500);
-        }
-    });
-}
