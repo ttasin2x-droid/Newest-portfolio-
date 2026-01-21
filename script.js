@@ -139,10 +139,10 @@ if(galleryGrid) { onValue(ref(db, 'home_works'), (snap) => { const data = snap.v
 const sdgGrid = document.getElementById('sdgGrid');
 if(sdgGrid) { onValue(ref(db, 'sdgs'), (snap) => { const data = snap.val(); sdgGrid.innerHTML = ""; if(data) Object.values(data).reverse().forEach((item, index) => { sdgGrid.innerHTML += ` <a href="${item.link}" target="_blank" class="sdg-card" data-aos="fade-up" data-aos-delay="${(index % 3) * 100}"> <div class="sdg-img"><img src="${item.image}"></div> <div class="sdg-text"><h3>${item.title}</h3></div> </a>`; }); }); }
 
-// 3. PHOTOGRAPHY (SDG STYLE)
+// 3. PHOTOGRAPHY (SDG STYLE) - UPDATED TO use 'home_photography'
 const photoGrid = document.getElementById('photoGrid');
 if (photoGrid) {
-    onValue(ref(db, 'photography'), (snap) => {
+    onValue(ref(db, 'home_photography'), (snap) => {
         const data = snap.val();
         photoGrid.innerHTML = ""; // Clear existing content
         if (data) {
