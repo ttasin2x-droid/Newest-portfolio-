@@ -240,3 +240,25 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .gallery-grid { grid-template-columns: 1fr; }
     .sdg-grid { grid-template-columns: 1fr; }
 }
+
+/* --- BENTO STYLE BUTTON (New) --- */
+.btn-bento-gradient {
+    background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+    color: white;
+    padding: 16px 40px;
+    border-radius: 16px;
+    border: none;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.btn-bento-gradient i { font-size: 1.1rem; transition: 0.3s; }
+.btn-bento-gradient:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(79, 70, 229, 0.4); }
+.btn-bento-gradient:hover i { transform: translateX(5px); }
