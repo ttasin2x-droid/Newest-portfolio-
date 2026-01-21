@@ -187,3 +187,15 @@ window.onload = function() {
 
 window.onscroll = function() { const btn = document.getElementById("backToTop"); if(btn) btn.style.display = (window.scrollY > 300) ? "flex" : "none"; };
 function createSoftSnowfall() { const container = document.getElementById('weather-container'); if(!container) return; for (let i = 0; i < 35; i++) { const flake = document.createElement('div'); flake.classList.add('snowflake'); flake.innerHTML = '❄'; flake.style.left = Math.random() * 100 + 'vw'; flake.style.animationDuration = `${Math.random() * 10 + 5}s, ${Math.random() * 4 + 3}s`; flake.style.animationDelay = Math.random() * 5 + 's'; container.appendChild(flake); } setTimeout(() => { container.style.opacity = '0'; }, 6000); }
+
+// --- CAMERA BUTTON LOGIC ---
+window.triggerCameraAnim = (btn) => {
+    if (!btn.classList.contains('animate')) {
+        btn.classList.add('animate');
+        
+        // Wait for animation (4s) then go to page
+        setTimeout(() => {
+            window.goToPage('photography.html');
+        }, 3800);
+    }
+};
