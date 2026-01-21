@@ -86,9 +86,23 @@
                         <div class="info-item"><i class="fas fa-phone-alt"></i> <span id="aboutPhone">+8801533327033</span></div>
                         <div class="info-item"><i class="fas fa-envelope"></i> <span id="aboutEmail">tasintanvir463@gmail.com</span></div>
                     </div>
-                    <div style="display: flex; gap: 15px;">
+                    
+                    <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
                         <button class="btn-main" onclick="openModal('contactModal')">Contact Me Anytime</button>
-                    </div>
+                        
+                        <button class="order mini-cam" id="photoBtn">
+                            <div class="fold-cut"></div><div class="fold-flap"></div>
+                            <span class="label default">My Photography</span>
+                            <span class="label success">Entering...</span>
+                            <div class="camera-group">
+                                <div class="cam-top"></div>
+                                <div class="cam-body"><div class="cam-flash"></div></div>
+                                <div class="cam-lens"></div>
+                            </div>
+                            <div class="flash-overlay"></div>
+                        </button>
+                        </div>
+
                 </div>
             </div>
         </div>
@@ -136,29 +150,7 @@
                 <a href="https://www.instagram.com/tanvir_tasin1/" target="_blank" style="font-size: 2rem; color: #E1306C;"><i class="fab fa-instagram"></i></a>
                 <a href="https://wa.me/+8801533327033" target="_blank" style="font-size: 2rem; color: #25D366;"><i class="fab fa-whatsapp"></i></a>
             </div>
-
-            <button class="order" id="photoBtn">
-                <div class="fold-cut"></div>
-                <div class="fold-flap"></div>
-                <div class="particles">
-                    <div class="dot"></div><div class="dot"></div>
-                    <div class="dot"></div><div class="dot"></div>
-                </div>
-                <span class="label default">My Photography</span>
-                <span class="label success">
-                    Entering...
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                </span>
-                <div class="camera-group">
-                    <div class="cam-top"></div>
-                    <div class="cam-body"><div class="cam-flash"></div></div>
-                    <div class="cam-lens"></div>
-                </div>
-                <div class="flash-overlay"></div>
-            </button>
-            <button onclick="closeModal(event, 'contactModal')" style="background: none; border: none; cursor: pointer; color: #666; margin-top: 15px;">Close Window</button>
+            <button onclick="closeModal(event, 'contactModal')" style="background: none; border: none; cursor: pointer; color: #666;">Close Window</button>
         </div>
     </div>
 
