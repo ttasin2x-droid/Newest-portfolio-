@@ -157,19 +157,15 @@ window.onload = function() {
 window.onscroll = function() { const btn = document.getElementById("backToTop"); if(btn) btn.style.display = (window.scrollY > 300) ? "flex" : "none"; };
 function createSoftSnowfall() { const container = document.getElementById('weather-container'); if(!container) return; for (let i = 0; i < 35; i++) { const flake = document.createElement('div'); flake.classList.add('snowflake'); flake.innerHTML = '❄'; flake.style.left = Math.random() * 100 + 'vw'; flake.style.animationDuration = `${Math.random() * 10 + 5}s, ${Math.random() * 4 + 3}s`; flake.style.animationDelay = Math.random() * 5 + 's'; container.appendChild(flake); } setTimeout(() => { container.style.opacity = '0'; }, 6000); }
 
-// --- PHOTOGRAPHY BUTTON LOGIC (MODAL) ---
+// --- PHOTOGRAPHY BUTTON LOGIC (REDIRECT) ---
 const photoBtn = document.getElementById('photoBtn');
 if (photoBtn) {
     photoBtn.addEventListener('click', function(e) {
         if (!this.classList.contains('animate')) {
             this.classList.add('animate');
-            
-            // 4 সেকেন্ড পর নতুন পেজে নিয়ে যাবে
             setTimeout(() => {
-                // এখানে 'home.html' এর পরিবর্তে আপনার ফটোগ্রাফি সাইটের লিংক দিন
-                // যেমন: window.open('https://your-photography-site.com', '_blank');
                 window.location.href = "home.html"; 
-            }, 4000);
+            }, 3500);
         }
     });
 }
