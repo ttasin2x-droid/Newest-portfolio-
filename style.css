@@ -241,10 +241,11 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .sdg-grid { grid-template-columns: 1fr; }
 }
 
-/* --- CAMERA ANIMATION BUTTON (PURPLE STYLE) --- */
+/* --- COMPACT CAMERA ANIMATION BUTTON (PURPLE STYLE) --- */
 .btn-camera {
     position: relative;
-    height: 60px;
+    /* REDUCED HEIGHT for compactness */
+    height: 48px; 
     width: 220px;
     padding: 0;
     border: none;
@@ -253,7 +254,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     border-radius: 12px;
     overflow: hidden;
     transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(122, 90, 248, 0.4);
+    box-shadow: 0 8px 25px rgba(122, 90, 248, 0.4);
 
     /* --- BACKGROUND (Purple Gradient) --- */
     background: radial-gradient(
@@ -266,14 +267,16 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 
 .btn-camera:active { transform: scale(0.98); }
 
-/* --- TEXT STYLING --- */
+/* --- TEXT STYLING (Recalculated for 48px height) --- */
 .cam-label {
     position: absolute;
-    left: 0; right: 0; top: 18px;
+    left: 0; right: 0; 
+    /* Centered Text: (48px height - ~16px font)/2 = approx 13px top */
+    top: 13px;
     text-align: center;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
-    color: white; /* White text for purple bg */
+    color: white; 
     z-index: 10;
     transition: 0.4s ease;
 }
@@ -290,12 +293,12 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 .btn-camera.animate .cam-label.default { opacity: 0; transform: translateY(-20px); }
 .btn-camera.animate .cam-label.success { opacity: 1; transform: translateY(0); transition-delay: 3.8s; }
 
-/* --- FOLD EFFECT (Adjusted for Page Background) --- */
+/* --- FOLD EFFECT (Smaller size for compact button) --- */
 .cam-fold-cut {
     position: absolute; top: -1px; right: -1px;
     border-style: solid;
-    border-width: 0 30px 30px 0;
-    /* Transparent + Your Site Background Color (#f1f5f9) */
+    /* Reduced from 30px to 22px */
+    border-width: 0 22px 22px 0;
     border-color: transparent var(--bg-color) transparent transparent;
     z-index: 20; transition: all 0.5s ease; pointer-events: none;
 }
@@ -304,8 +307,8 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     position: absolute; top: 0; right: 0;
     width: 0; height: 0;
     border-style: solid;
-    border-width: 30px 0 0 30px;
-    /* Dark Purple Flap Color */
+    /* Reduced from 30px to 22px */
+    border-width: 22px 0 0 22px;
     border-color: transparent transparent transparent #5b21b6;
     filter: drop-shadow(-2px 2px 2px rgba(0,0,0,0.3));
     z-index: 21; transition: all 0.5s ease; transform-origin: top right;
@@ -330,9 +333,12 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 .c-dot:nth-child(3) { left: 60%; animation-duration: 2.8s; animation-delay: 0.5s; }
 .c-dot:nth-child(4) { left: 80%; animation-duration: 3.2s; animation-delay: 1s; }
 
-/* --- CAMERA OBJECT --- */
+/* --- CAMERA OBJECT (Recalculated Position) --- */
 .camera-group {
-    position: absolute; width: 45px; height: 35px; top: 12px; left: -60px; z-index: 15;
+    position: absolute; width: 45px; height: 35px; 
+    /* Centered vertically: (48px - 35px)/2 = approx 6.5px -> used 7px */
+    top: 7px; 
+    left: -60px; z-index: 15;
 }
 .cam-body {
     width: 44px; height: 28px; background: #222; border-radius: 5px;
