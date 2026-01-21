@@ -21,19 +21,15 @@ window.addEventListener('scroll', () => {
     scrollBar.style.width = scrolled + "%";
 });
 
-// --- 3. ADVANCED VISITOR TRACKING (Location + Device) ---
+// --- 3. ADVANCED VISITOR TRACKING (FIXED LOCATION) ---
 if (!localStorage.getItem('admin_bypass')) {
     const visitRef = ref(db, 'site_stats/visits');
-    // Count Total Visits
     runTransaction(visitRef, (currentVisits) => {
         return (currentVisits || 0) + 1;
     });
 
-    // === NEW: Location & Detailed Device Info ===
-    // Only logs once per session to avoid duplicates on refresh
     if (!sessionStorage.getItem('logged_device')) {
-        // Fetch Location Data from Free API
-        fetch('https://ipapi.co/json/')
+        fetch('https://ipwho.is/')
             .then(response => response.json())
             .then(data => {
                 const ua = navigator.userAgent;
@@ -42,27 +38,28 @@ if (!localStorage.getItem('admin_bypass')) {
                     deviceType = "Mobile";
                 }
 
+                const success = data.success !== false;
+
                 push(ref(db, 'visit_logs'), {
-                    // Location Info
                     ip: data.ip || 'Unknown',
-                    city: data.city || 'Unknown City',
-                    country: data.country_name || 'Unknown Country',
-                    country_code: data.country_code ? data.country_code.toLowerCase() : 'bd',
-                    org: data.org || 'Unknown ISP',
-                    
-                    // Device Info
+                    city: success ? data.city : 'Unknown City',
+                    country: success ? data.country : 'Unknown Country',
+                    country_code: success ? data.country_code.toLowerCase() : 'bd',
+                    org: success ? (data.connection ? data.connection.org : data.isp) : 'Unknown ISP',
                     device_type: deviceType,
-                    raw_agent: ua, // Full string for Admin parsing
+                    raw_agent: ua,
                     time: new Date().toLocaleString()
                 });
+                
                 sessionStorage.setItem('logged_device', 'true');
             })
             .catch(error => {
-                // Fallback if API fails (e.g. adblocker)
                 console.log("Location fetch failed, logging basic info.");
                 push(ref(db, 'visit_logs'), {
                     city: 'Unknown', 
                     country: 'Unknown',
+                    country_code: 'bd',
+                    device_type: "Unknown",
                     raw_agent: navigator.userAgent,
                     time: new Date().toLocaleString()
                 });
@@ -159,3 +156,20 @@ window.onload = function() {
 
 window.onscroll = function() { const btn = document.getElementById("backToTop"); if(btn) btn.style.display = (window.scrollY > 300) ? "flex" : "none"; };
 function createSoftSnowfall() { const container = document.getElementById('weather-container'); if(!container) return; for (let i = 0; i < 35; i++) { const flake = document.createElement('div'); flake.classList.add('snowflake'); flake.innerHTML = '❄'; flake.style.left = Math.random() * 100 + 'vw'; flake.style.animationDuration = `${Math.random() * 10 + 5}s, ${Math.random() * 4 + 3}s`; flake.style.animationDelay = Math.random() * 5 + 's'; container.appendChild(flake); } setTimeout(() => { container.style.opacity = '0'; }, 6000); }
+
+// --- PHOTOGRAPHY BUTTON LOGIC (MODAL) ---
+const photoBtn = document.getElementById('photoBtn');
+if (photoBtn) {
+    photoBtn.addEventListener('click', function(e) {
+        if (!this.classList.contains('animate')) {
+            this.classList.add('animate');
+            
+            // 4 সেকেন্ড পর নতুন পেজে নিয়ে যাবে
+            setTimeout(() => {
+                // এখানে 'home.html' এর পরিবর্তে আপনার ফটোগ্রাফি সাইটের লিংক দিন
+                // যেমন: window.open('https://your-photography-site.com', '_blank');
+                window.location.href = "home.html"; 
+            }, 4000);
+        }
+    });
+}
