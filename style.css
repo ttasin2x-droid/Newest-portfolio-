@@ -171,112 +171,6 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 
 .load-more-container { text-align: center; margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
 
-/* --- BENTO GRID PHOTOGRAPHY (NEW) --- */
-.bento-wrapper {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.bento-grid {
-    display: grid;
-    /* 5x5 Grid Definition */
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    gap: 15px;
-    height: 600px; /* Fixed height required for complex row spanning */
-}
-
-.bento-card {
-    background-color: #ffffff;
-    border-radius: 20px;
-    border: 1px solid rgba(0,0,0,0.05);
-    overflow: hidden;
-    position: relative;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.bento-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-}
-
-/* Placeholder Styling */
-.bento-card .b-content {
-    width: 100%;
-    height: 100%;
-    background: #f8fafc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.placeholder-icon {
-    font-size: 2rem;
-    color: #cbd5e1;
-}
-
-/* 1. Main Feature (Left Vertical) - Spans 2 cols, 5 rows */
-.b-main {
-    grid-column: span 2;
-    grid-row: span 5;
-    background: #f1f5f9;
-}
-
-/* 2. Top Middle - Spans 2 cols, 3 rows */
-.b-wide-top {
-    grid-column: span 2;
-    grid-row: span 3;
-    grid-column-start: 3;
-}
-
-/* 3. Bottom Middle - Spans 2 cols, 2 rows */
-.b-wide-bottom {
-    grid-column: span 2;
-    grid-row: span 2;
-    grid-column-start: 3;
-    grid-row-start: 4;
-}
-
-/* 4. Top Right - Spans 1 col, 2 rows */
-.b-box-1 {
-    grid-column-start: 5;
-    grid-row: span 2;
-    grid-row-start: 1;
-}
-
-/* 5. Middle Right - Spans 1 col, 2 rows */
-.b-box-2 {
-    grid-column-start: 5;
-    grid-row: span 2;
-    grid-row-start: 3;
-}
-
-/* 6. Bottom Right - Spans 1 col, 1 row (Accent Button) */
-.b-box-3 {
-    grid-column-start: 5;
-    grid-row-start: 5;
-    background: var(--primary-color);
-    color: white;
-}
-.b-box-3:hover {
-    background: var(--accent-color);
-}
-
-.b-link-icon {
-    color: white;
-    font-size: 1.2rem;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 /* --- OTHER SECTIONS --- */
 .promo-card {
     background: #fff; border-radius: 25px; padding: 0; box-shadow: var(--shadow-lg); 
@@ -342,23 +236,6 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     /* -- Works Grid Mobile -- */
     .gallery-grid { grid-template-columns: repeat(2, 1fr); }
 }
-
-@media (max-width: 768px) {
-    /* --- BENTO GRID MOBILE --- */
-    .bento-grid {
-        display: flex;
-        flex-direction: column;
-        height: auto;
-    }
-    
-    /* Mobile specific heights to look good */
-    .b-main { height: 300px; }
-    .b-wide-top { height: 200px; }
-    .b-wide-bottom { height: 180px; }
-    .b-box-1, .b-box-2 { height: 150px; display: none; /* Hiding smaller boxes on mobile to save space, remove this if you want them shown */ }
-    .b-box-3 { height: 60px; border-radius: 50px; } /* Turn the button into a bar on mobile */
-}
-
 @media (max-width: 600px) {
     .gallery-grid { grid-template-columns: 1fr; }
     .sdg-grid { grid-template-columns: 1fr; }
