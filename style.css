@@ -38,12 +38,10 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 
 /* --- BUTTONS --- */
 .btn-main {
-    background-color: var(--primary-color); color: white; padding: 12px 25px; 
+    background-color: var(--primary-color); color: white; padding: 10px 22px; 
     border-radius: 50px; font-weight: 600; text-decoration: none;
     display: inline-flex; align-items: center; gap: 8px; transition: 0.3s;
-    box-shadow: 0 5px 15px rgba(15, 23, 42, 0.2); font-size: 0.85rem; letter-spacing: 0.5px;
-    height: 44px; /* Fixed height for alignment */
-    border: none; cursor: pointer;
+    box-shadow: 0 5px 15px rgba(15, 23, 42, 0.2); font-size: 0.8rem; letter-spacing: 0.5px;
 }
 .btn-main:hover { background-color: var(--accent-color); transform: translateY(-3px); }
 
@@ -138,9 +136,17 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     background: #fff; box-shadow: var(--shadow-sm); cursor: pointer;
     height: 250px; 
     display: none; /* JS toggles this */
+    /* Opacity removed to let AOS handle animation */
 }
-.gallery-item.visible { display: block; }
-.gallery-item.animate-custom { animation: smoothFadeUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+
+.gallery-item.visible { 
+    display: block; 
+}
+
+/* Load More Animation */
+.gallery-item.animate-custom {
+    animation: smoothFadeUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
 
 @keyframes smoothFadeUp {
     0% { opacity: 0; transform: translateY(40px); }
@@ -148,6 +154,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 }
 
 .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s ease; }
+
 .overlay {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(15, 23, 42, 0.4); opacity: 0; transition: 0.3s;
@@ -157,10 +164,12 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     color: white; font-size: 1.5rem; transform: scale(0); transition: 0.3s;
     background: rgba(255,255,255,0.25); padding: 18px; border-radius: 50%; backdrop-filter: blur(5px);
 }
+
 .gallery-item:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
 .gallery-item:hover img { transform: scale(1.1); }
 .gallery-item:hover .overlay { opacity: 1; }
 .gallery-item:hover .overlay i { transform: scale(1); }
+
 .load-more-container { text-align: center; margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
 
 /* --- OTHER SECTIONS --- */
@@ -221,6 +230,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .promo-image { width: 100%; height: 250px; }
     .promo-content { width: 100%; padding: 25px; text-align: center; }
     .info-item { justify-content: center; }
+    
     .sdg-grid { grid-template-columns: 1fr; gap: 25px; padding: 0 15px; }
     .sdg-card { max-width: 100%; }
     .gallery-grid { grid-template-columns: repeat(2, 1fr); }
@@ -230,50 +240,149 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .sdg-grid { grid-template-columns: 1fr; }
 }
 
-/* --- NEW: COMPACT PHOTOGRAPHY BUTTON (Matched Size) --- */
-:root { --sky-blue: #38bdf8; --sky-glow: rgba(56, 189, 248, 0.6); --fold-back: #e2e8f0; }
-
-.order.mini-cam {
-    appearance: none; border: 0; position: relative; 
-    height: 44px; /* MATCHED with btn-main */
-    width: 160px; /* Compact width */
-    margin: 0; padding: 0; outline: none; cursor: pointer; border-radius: 50px; /* MATCHED rounded */
-    background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 40%, #ffffff 50%, #e0f2fe 60%, #ffffff 100%);
-    background-size: 200% 200%; animation: gradientFloat 4s ease infinite;
-    box-shadow: 0 5px 15px rgba(56, 189, 248, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
-    transition: all 0.3s ease; overflow: hidden; display: block;
+/* =========================================
+   PHOTOGRAPHY SECTION & CAMERA BUTTON
+   ========================================= */
+:root {
+    --pg-bg: #2c2c2c;
+    --cam-purple-light: #8e72fa;
+    --cam-purple-dark: #6b4af0;
+    --cam-fold: #a78bfa; 
 }
-@keyframes gradientFloat { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-.order.mini-cam:active { transform: scale(0.98); }
 
-/* Fold Effect - Scaled Down */
-.fold-cut { position: absolute; top: -1px; right: -1px; border-style: solid; border-width: 0 20px 20px 0; border-color: transparent rgba(255,255,255,0.95) transparent transparent; z-index: 20; transition: all 0.5s ease; pointer-events: none; }
-.fold-flap { position: absolute; top: 0; right: 0; width: 0; height: 0; border-style: solid; border-width: 20px 0 0 20px; border-color: transparent transparent transparent var(--fold-back); filter: drop-shadow(-2px 2px 2px rgba(0,0,0,0.1)); z-index: 21; transition: all 0.5s ease; transform-origin: top right; }
-.order:hover .fold-flap, .order.animate .fold-flap { border-width: 0; }
-.order:hover .fold-cut, .order.animate .fold-cut { border-width: 0; }
+.photo-grid-wrapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 1000px;
+    aspect-ratio: 16 / 10;
+    margin: 0 auto;
+}
 
-/* Text - Centered */
-.order span.label { position: absolute; left: 0; right: 0; top: 12px; text-align: center; font-size: 0.8rem; font-weight: 700; color: #0f172a; z-index: 10; transition: 0.4s ease; text-transform: uppercase; letter-spacing: 0.5px; }
-.order span.default { opacity: 1; transform: translateY(0); }
-.order span.success { opacity: 0; transform: translateY(15px); color: var(--sky-blue); font-size: 0.75rem; }
-.order.animate span.default { opacity: 0; transform: translateY(-15px); }
-.order.animate span.success { opacity: 1; transform: translateY(0); transition-delay: 3s; }
+.pg-item {
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    background: var(--pg-bg);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
 
-/* Camera Animation - Scaled Down */
-.camera-group { position: absolute; width: 50px; height: 40px; top: 8px; left: -60px; z-index: 15; transform: scale(0.65); }
-.cam-body { width: 48px; height: 32px; border-radius: 6px; position: absolute; top: 5px; left: 0; background: linear-gradient(145deg, #333, #000); box-shadow: 2px 5px 10px rgba(0,0,0,0.2); }
-.cam-top { width: 22px; height: 6px; background: #222; position: absolute; top: -1px; left: 13px; border-radius: 4px 4px 0 0; }
-.cam-lens { width: 24px; height: 24px; background: radial-gradient(circle at 30% 30%, #444, #000); border: 2px solid #555; border-radius: 50%; position: absolute; top: 9px; left: 12px; }
-.cam-lens::after { content: ''; position: absolute; width: 8px; height: 8px; background: rgba(56, 189, 248, 0.7); border-radius: 50%; top: 4px; right: 4px; filter: blur(1px); }
-.cam-flash { width: 6px; height: 4px; background: #fff; position: absolute; top: 7px; right: 5px; }
-.flash-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; opacity: 0; pointer-events: none; z-index: 30; mix-blend-mode: overlay; }
-.order.animate .camera-group { animation: driveCameraMini 3.5s ease-in-out forwards; }
-.order.animate .flash-overlay { animation: flashEffect 3.5s ease-in-out forwards; }
+.pg-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    display: block; transition: transform 0.6s ease;
+}
+.pg-item:not(.pg-6-btn):hover img { transform: scale(1.1); }
 
-@keyframes driveCameraMini {
-    0% { left: -60px; transform: scale(0.65) rotate(-10deg); }
-    40% { left: 50px; transform: scale(0.8) rotate(0deg); }
-    50% { left: 50px; transform: scale(0.8); }
-    100% { left: 180px; transform: scale(0.65) rotate(10deg); }
+/* Grid Positioning */
+.pg-1 { grid-column: span 2; grid-row: span 5; }
+.pg-2 { grid-column: span 2; grid-row: span 3; grid-column-start: 3; }
+.pg-3 { grid-column: span 2; grid-row: span 2; grid-column-start: 3; grid-row-start: 4; }
+.pg-4 { grid-row: span 2; grid-column-start: 5; grid-row-start: 1; }
+.pg-5 { grid-row: span 2; grid-column-start: 5; grid-row-start: 3; }
+.pg-6-btn { 
+    grid-column-start: 5; grid-row-start: 5; 
+    display: flex; justify-content: center; align-items: center; 
+    background: transparent !important; box-shadow: none !important; 
+}
+
+/* --- Camera Button CSS --- */
+.cam-btn {
+    -webkit-appearance: none; appearance: none; border: 0;
+    position: relative; width: 100%; height: 100%;
+    padding: 0; outline: none; cursor: pointer;
+    border-radius: 12px; overflow: hidden;
+    background: linear-gradient(90deg, var(--cam-purple-dark), var(--cam-purple-light));
+    box-shadow: 0 4px 15px rgba(107, 74, 240, 0.4);
+    transition: all 0.3s ease;
+}
+.cam-btn:active { transform: scale(0.98); }
+
+/* Fold Effect */
+.fold-cut {
+    position: absolute; top: -1px; right: -1px;
+    border-style: solid; border-width: 0 30px 30px 0; 
+    border-color: transparent var(--bg-color) transparent transparent; 
+    z-index: 20; transition: all 0.5s ease; pointer-events: none;
+}
+.fold-flap {
+    position: absolute; top: 0; right: 0; width: 0; height: 0;
+    border-style: solid; border-width: 30px 0 0 30px; 
+    border-color: transparent transparent transparent var(--cam-fold);
+    filter: drop-shadow(-2px 2px 2px rgba(0,0,0,0.3));
+    z-index: 21; transition: all 0.5s ease; transform-origin: top right;
+}
+.cam-btn:hover .fold-flap, .cam-btn.animate .fold-flap { border-width: 0; }
+.cam-btn:hover .fold-cut, .cam-btn.animate .fold-cut { border-width: 0; }
+
+/* Particles */
+.particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+.dot {
+    position: absolute; width: 3px; height: 3px;
+    background: rgba(255, 255, 255, 0.6); border-radius: 50%;
+    bottom: -10px; opacity: 0; animation: rise 3s infinite ease-in;
+}
+@keyframes rise { 0% { transform: translateY(0); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: translateY(-60px); opacity: 0; } }
+.dot:nth-child(1) { left: 15%; animation-duration: 2s; }
+.dot:nth-child(2) { left: 35%; animation-duration: 3.5s; width: 2px; }
+.dot:nth-child(3) { left: 65%; animation-duration: 2.8s; animation-delay: 0.5s; }
+.dot:nth-child(4) { left: 85%; animation-duration: 3.2s; animation-delay: 1s; }
+
+/* Labels */
+.cam-btn span.label {
+    position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 0.9rem; font-weight: 600; color: white; 
+    z-index: 10; transition: 0.4s ease; text-transform: uppercase;
+}
+.cam-btn span.success { opacity: 0; transform: translateY(20px); gap: 8px; }
+.cam-btn.animate span.default { opacity: 0; transform: translateY(-20px); }
+.cam-btn.animate span.success { opacity: 1; transform: translateY(0); transition-delay: 3.8s; }
+
+/* Camera Graphics */
+.camera-group { position: absolute; width: 40px; height: 30px; top: 50%; left: -60px; transform: translateY(-50%); z-index: 15; }
+.cam-body {
+    width: 36px; height: 24px; background: linear-gradient(145deg, #333, #000);
+    border-radius: 4px; position: absolute; top: 4px; left: 0;
+    box-shadow: 2px 3px 6px rgba(0,0,0,0.3);
+}
+.cam-top {
+    width: 16px; height: 4px; background: #222;
+    position: absolute; top: 0; left: 10px; border-radius: 3px 3px 0 0;
+}
+.cam-lens {
+    width: 18px; height: 18px; background: radial-gradient(circle at 30% 30%, #444, #000);
+    border: 1.5px solid #555; border-radius: 50%;
+    position: absolute; top: 7px; left: 9px;
+}
+.cam-lens::after {
+    content: ''; position: absolute; width: 6px; height: 6px;
+    background: rgba(138, 43, 226, 0.7); border-radius: 50%;
+    top: 2px; right: 2px; filter: blur(1px);
+}
+.cam-flash { width: 4px; height: 3px; background: #fff; position: absolute; top: 5px; right: 4px; }
+.flash-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: white; opacity: 0; pointer-events: none; z-index: 30; mix-blend-mode: overlay;
+}
+
+/* Animation Keyframes */
+.cam-btn.animate .camera-group { animation: driveCamera 4s ease-in-out forwards; }
+.cam-btn.animate .flash-overlay { animation: flashEffect 4s ease-in-out forwards; }
+
+@keyframes driveCamera {
+    0% { left: -60px; transform: translateY(-50%) scale(0.8) rotate(-10deg); }
+    40% { left: 50%; margin-left: -20px; transform: translateY(-50%) scale(1.1) rotate(0deg); } 
+    50% { left: 50%; margin-left: -20px; transform: translateY(-50%) scale(1.1); }
+    100% { left: 120%; transform: translateY(-50%) scale(0.8) rotate(10deg); } 
 }
 @keyframes flashEffect { 0%, 45% { opacity: 0; } 48% { opacity: 1; } 55% { opacity: 0; } }
+
+/* Responsive Adjustments for Photography Grid */
+@media (max-width: 600px) {
+    .photo-grid-wrapper { gap: 5px; aspect-ratio: 1 / 1.4; }
+    .cam-btn span.label { font-size: 0.75rem; }
+    .fold-cut { border-width: 0 20px 20px 0; }
+    .fold-flap { border-width: 20px 0 0 20px; }
+}
