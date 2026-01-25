@@ -1,7 +1,6 @@
-/* --- CUSTOM FONT LOAD (UPDATED PATH) --- */
+/* --- CUSTOM FONT LOAD (Path: fonts folder) --- */
 @font-face {
     font-family: 'Astra';
-    /* এখানে fonts ফোল্ডার থেকে ফাইলটি লোড করা হচ্ছে */
     src: url('fonts/Astra.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
@@ -104,11 +103,11 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 }
 .hero-text { padding: 60px; width: 50%; z-index: 2; }
 
-/* --- HERO TITLE (ASTRA FONT + SINGLE LINE) --- */
+/* --- HERO TITLE STYLING (Astra Font) --- */
 .hero-text h1 {
     font-family: 'Astra', sans-serif;
-    font-size: 4.5rem; /* সাইজ এডজাস্ট করা হয়েছে এক লাইনের জন্য */
-    white-space: nowrap; /* টেক্সট যাতে না ভাঙ্গে */
+    font-size: 4.5rem; /* Desktop Size */
+    white-space: nowrap; /* Keeps text in one line */
     line-height: 1.1;
     font-weight: normal; 
     margin-bottom: 25px;
@@ -238,7 +237,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 .modal-btn:hover { background: var(--accent-color); color: white; }
 @keyframes fadeIn { from{opacity:0; transform: scale(0.9);} to{opacity:1; transform: scale(1);} }
 
-/* --- RESPONSIVE --- */
+/* --- RESPONSIVE & MOBILE FIXES --- */
 @media (max-width: 900px) {
     .hero-text h1 { font-size: 3rem; }
     .hero-card-main { height: auto; flex-direction: column-reverse; padding-bottom: 0; }
@@ -251,15 +250,30 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .promo-content { width: 100%; padding: 25px; text-align: center; }
     .info-item { justify-content: center; }
     
-    /* -- FIXED: Mobile Vertical Layout for SDGs -- */
     .sdg-grid { grid-template-columns: 1fr; gap: 25px; padding: 0 15px; }
     .sdg-card { max-width: 100%; }
-    /* -- Works Grid Mobile -- */
     .gallery-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* --- MOBILE SPECIFIC FIXES --- */
 @media (max-width: 600px) {
     .gallery-grid { grid-template-columns: 1fr; }
     .sdg-grid { grid-template-columns: 1fr; }
+
+    /* Fix for cut-off text on mobile */
+    .hero-text { 
+        width: 100%; 
+        padding: 40px 10px; /* Reduced padding for more space */
+        text-align: center; 
+    }
+    
+    .hero-text h1 { 
+        font-size: 11vw; /* Responsive font size to fit width */
+        margin-bottom: 15px;
+    }
+    
+    .hero-text h4 { font-size: 1rem; letter-spacing: 1px; }
+    .hero-text p { font-size: 0.9rem; padding: 0 10px; }
 }
 
 /* --- COMPACT CAMERA ANIMATION BUTTON (PURPLE STYLE) --- */
@@ -407,4 +421,4 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     0%, 45% { opacity: 0; }
     48% { opacity: 1; }
     55% { opacity: 0; }
-}
+    }
