@@ -101,12 +101,15 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     box-shadow: var(--shadow-lg); border: 1px solid white;
     display: flex; justify-content: space-between; align-items: center; height: 600px;
 }
-.hero-text { padding: 60px; width: 50%; z-index: 2; }
 
-/* --- HERO TITLE (ASTRA FONT + SINGLE LINE) --- */
+/* Reduced padding for desktop to give more space for text */
+.hero-text { padding: 40px; width: 50%; z-index: 2; }
+
+/* --- HERO TITLE (ASTRA FONT + RESPONSIVE) --- */
 .hero-text h1 {
     font-family: 'Astra', sans-serif;
-    font-size: 4.5rem; /* Desktop Size */
+    /* Changed to VW unit for Desktop so it scales with window width */
+    font-size: 3.5vw; 
     white-space: nowrap; /* Keeps text in one line */
     line-height: 1.1;
     font-weight: normal; 
@@ -268,7 +271,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     }
     
     .hero-text h1 { 
-        font-size: 8vw; /* Reduced to 8vw to fit on one line */
+        font-size: 7vw; /* Reduced to 7vw to fit "TANVIR TASIN" completely */
         margin-bottom: 15px;
         white-space: nowrap;
     }
