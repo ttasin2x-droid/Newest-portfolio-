@@ -1,3 +1,11 @@
+/* --- CUSTOM FONT LOAD --- */
+@font-face {
+    font-family: 'Astra';
+    src: url('Astra.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* --- PREMIUM VARIABLES --- */
 :root {
     --primary-color: #0f172a;
@@ -94,12 +102,23 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     display: flex; justify-content: space-between; align-items: center; height: 600px;
 }
 .hero-text { padding: 60px; width: 50%; z-index: 2; }
+
+/* UPDATED HERO TITLE FONT */
 .hero-text h1 {
-    font-size: 4.5rem; line-height: 1; font-weight: 800; margin-bottom: 25px;
+    font-family: 'Astra', sans-serif;
+    font-size: 5.5rem;
+    line-height: 1.1;
+    font-weight: normal;
+    margin-bottom: 25px;
     background: linear-gradient(to right, #0f172a 20%, #2563eb 40%, #93c5fd 50%, #2563eb 60%, #0f172a 80%);
-    background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text; color: transparent; animation: shine 4s linear infinite;
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    animation: shine 4s linear infinite;
 }
+
 @keyframes shine { to { background-position: 200% center; } }
 .hero-text h4 { color: #444; font-size: 1.2rem; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
 .hero-image-side { width: 50%; height: 100%; position: relative; }
@@ -386,4 +405,4 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     0%, 45% { opacity: 0; }
     48% { opacity: 1; }
     55% { opacity: 0; }
-}
+               }
