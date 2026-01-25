@@ -405,4 +405,4 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     0%, 45% { opacity: 0; }
     48% { opacity: 1; }
     55% { opacity: 0; }
-               }
+}
