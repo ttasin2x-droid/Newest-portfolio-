@@ -103,7 +103,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 }
 .hero-text { padding: 60px; width: 50%; z-index: 2; }
 
-/* --- HERO TITLE STYLING (Astra Font) --- */
+/* --- HERO TITLE (ASTRA FONT + SINGLE LINE) --- */
 .hero-text h1 {
     font-family: 'Astra', sans-serif;
     font-size: 4.5rem; /* Desktop Size */
@@ -255,7 +255,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .gallery-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* --- MOBILE SPECIFIC FIXES --- */
+/* --- MOBILE SPECIFIC FIXES (UPDATED) --- */
 @media (max-width: 600px) {
     .gallery-grid { grid-template-columns: 1fr; }
     .sdg-grid { grid-template-columns: 1fr; }
@@ -263,17 +263,18 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     /* Fix for cut-off text on mobile */
     .hero-text { 
         width: 100%; 
-        padding: 40px 10px; /* Reduced padding for more space */
+        padding: 40px 5px; /* Reduced padding for maximum width */
         text-align: center; 
     }
     
     .hero-text h1 { 
-        font-size: 11vw; /* Responsive font size to fit width */
+        font-size: 8vw; /* Reduced to 8vw to fit on one line */
         margin-bottom: 15px;
+        white-space: nowrap;
     }
     
     .hero-text h4 { font-size: 1rem; letter-spacing: 1px; }
-    .hero-text p { font-size: 0.9rem; padding: 0 10px; }
+    .hero-text p { font-size: 0.9rem; padding: 0 5px; }
 }
 
 /* --- COMPACT CAMERA ANIMATION BUTTON (PURPLE STYLE) --- */
@@ -421,4 +422,4 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     0%, 45% { opacity: 0; }
     48% { opacity: 1; }
     55% { opacity: 0; }
-    }
+}
