@@ -1,7 +1,8 @@
-/* --- CUSTOM FONT LOAD --- */
+/* --- CUSTOM FONT LOAD (UPDATED PATH) --- */
 @font-face {
     font-family: 'Astra';
-    src: url('Astra.otf') format('opentype');
+    /* এখানে fonts ফোল্ডার থেকে ফাইলটি লোড করা হচ্ছে */
+    src: url('fonts/Astra.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
 }
@@ -103,12 +104,13 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 }
 .hero-text { padding: 60px; width: 50%; z-index: 2; }
 
-/* UPDATED HERO TITLE FONT */
+/* --- HERO TITLE (ASTRA FONT + SINGLE LINE) --- */
 .hero-text h1 {
     font-family: 'Astra', sans-serif;
-    font-size: 5.5rem;
+    font-size: 4.5rem; /* সাইজ এডজাস্ট করা হয়েছে এক লাইনের জন্য */
+    white-space: nowrap; /* টেক্সট যাতে না ভাঙ্গে */
     line-height: 1.1;
-    font-weight: normal;
+    font-weight: normal; 
     margin-bottom: 25px;
     background: linear-gradient(to right, #0f172a 20%, #2563eb 40%, #93c5fd 50%, #2563eb 60%, #0f172a 80%);
     background-size: 200% auto;
