@@ -1,3 +1,14 @@
+/* --- CUSTOM FONT SETUP (Step 1) --- */
+/* এখানে আপনার ফন্ট লোড করা হচ্ছে */
+@font-face {
+    font-family: 'MyHeroFont';
+    /* নিচের লাইনে আপনার ফন্টের সঠিক নাম দিন। ফোল্ডারের নাম fonts */
+    src: url('fonts/Sugo-Pro-Display-Bold-trial.ttf'); 
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* --- PREMIUM VARIABLES --- */
 :root {
     --primary-color: #0f172a;
@@ -77,8 +88,16 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     display: flex; justify-content: space-between; align-items: center; height: 600px;
 }
 .hero-text { padding: 60px; width: 50%; z-index: 2; }
+
+/* --- CUSTOM FONT APPLIED TO NAME (Step 2) --- */
+#heroTitle {
+    font-family: 'MyHeroFont', sans-serif !important; /* Custom font here */
+    font-weight: 400; /* Adjust weight based on your font */
+    letter-spacing: 1px; /* Adjust spacing if needed */
+}
+
 .hero-text h1 {
-    font-size: 4.5rem; line-height: 1; font-weight: 800; margin-bottom: 25px;
+    font-size: 4.5rem; line-height: 1.2; font-weight: 800; margin-bottom: 25px;
     background: linear-gradient(to right, #0f172a 20%, #2563eb 40%, #93c5fd 50%, #2563eb 60%, #0f172a 80%);
     background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text; color: transparent; animation: shine 4s linear infinite;
