@@ -56,13 +56,13 @@ onValue(ref(db, 'site_content'), (snap) => {
 onValue(ref(db, 'hero'), (snap) => { if(snap.val()?.imageUrl) document.getElementById('dynamicHeroImg').src = snap.val().imageUrl; });
 onValue(ref(db, 'profile'), (snap) => { if(snap.val()?.imageUrl) document.getElementById('dynamicProfileImg').src = snap.val().imageUrl; });
 
-// 1. HOME WORKS (UPDATED with Skeleton Removal)
+// 1. HOME WORKS (Updated with Skeleton Logic)
 const galleryGrid = document.getElementById('galleryGrid');
 if(galleryGrid) { 
     onValue(ref(db, 'home_works'), (snap) => { 
         const data = snap.val(); 
         
-        // Remove Skeleton only when data is ready
+        // ডেটা পেলে Skeleton সরিয়ে ফেলা হবে, না পেলে মেসেজ দেখাবে
         galleryGrid.innerHTML = ""; 
         
         if(data) { 
@@ -70,8 +70,9 @@ if(galleryGrid) {
             images.forEach((item, index) => { 
                 const div = document.createElement('div'); 
                 div.className = "gallery-item"; 
+                // অ্যানিমেশন একটু ফাস্ট করার জন্য ডিলে কমানো হলো
                 div.setAttribute('data-aos', 'fade-up'); 
-                div.setAttribute('data-aos-delay', (index % 4) * 100); 
+                div.setAttribute('data-aos-delay', (index % 4) * 50); 
                 div.setAttribute('onclick', `window.openLightboxFromURL('${item.url}')`); 
                 div.innerHTML = `<img src="${item.url}" loading="lazy"><div class="overlay"><i class="fas fa-expand"></i></div>`; 
                 galleryGrid.appendChild(div); 
