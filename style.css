@@ -76,27 +76,30 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     20% { left: 200%; opacity: 0; }
     100% { left: 200%; opacity: 0; }
 }
-.hero-card-main::before, .scout-floating-card::before, .gallery-item::before, .promo-card::before, .sdg-card::before, .social-box::before, .glass-modal::before {
+.hero-card-main::after, .scout-floating-card::after, .gallery-item::after, .promo-card::after, .sdg-card::after, .social-box::after, .glass-modal::after {
     content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%);
     transform: skewX(-25deg); animation: premiumGlassShine 6s infinite;
-    z-index: 5; pointer-events: none; mix-blend-mode: overlay;
+    z-index: 10; pointer-events: none; mix-blend-mode: overlay; border-radius: inherit;
 }
 
 
-/* --- HERO SECTION --- */
+/* --- TRUE GLASSMORPHISM STYLES (MATCHING THE IMAGE) --- */
+
+/* Hero Section */
 .hero-wrapper { padding: 40px 0; min-height: 90vh; display: flex; align-items: center; }
 .hero-card-main {
-    background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
     border-radius: 40px; width: 100%; position: relative; overflow: hidden;
     display: flex; justify-content: space-between; align-items: center; height: 600px;
+    padding: 15px; /* Ashol kacher padding */
     
-    /* --- THICK GLOSSY GLASS BORDER --- */
-    border: 10px solid rgba(255, 255, 255, 0.35); 
-    background-clip: padding-box; 
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    /* GLASS EFFECT */
+    background: rgba(255, 255, 255, 0.35); 
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.8); 
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
-.hero-text { padding: 60px; width: 50%; z-index: 2; position: relative; }
+.hero-text { padding: 50px; width: 50%; z-index: 2; position: relative; }
 .hero-text h1 {
     font-size: 4.5rem; line-height: 1; font-weight: 800; margin-bottom: 25px;
     background: linear-gradient(to right, #0f172a 20%, #2563eb 40%, #93c5fd 50%, #2563eb 60%, #0f172a 80%);
@@ -105,22 +108,22 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 }
 @keyframes shine { to { background-position: 200% center; } }
 .hero-text h4 { color: #444; font-size: 1.2rem; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
-.hero-image-side { width: 50%; height: 100%; position: relative; z-index: 2; }
-.hero-image-side img { width: 100%; height: 100%; object-fit: cover; border-top-left-radius: 30px; border-bottom-left-radius: 30px; } /* Adjusted radius for thick border */
+.hero-image-side { width: 50%; height: 100%; position: relative; z-index: 2; border-radius: 30px; overflow: hidden; }
+.hero-image-side img { width: 100%; height: 100%; object-fit: cover; }
 
 /* Floating Scout Card */
 .scout-floating-card {
-    position: absolute; bottom: 40px; right: 40px;
-    background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    position: absolute; bottom: 30px; right: 30px;
     padding: 15px 25px; border-radius: 20px; display: flex; align-items: center;
-    gap: 15px; cursor: pointer; transition: all 0.3s ease; z-index: 10; animation: float 4s ease-in-out infinite; overflow: hidden;
+    gap: 15px; cursor: pointer; transition: all 0.3s ease; z-index: 10; animation: float 4s ease-in-out infinite;
     
-    /* --- THICK GLOSSY GLASS BORDER --- */
-    border: 8px solid rgba(255, 255, 255, 0.35); 
-    background-clip: padding-box;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    /* GLASS EFFECT */
+    background: rgba(255, 255, 255, 0.45); 
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
-.scout-floating-card:hover { transform: translateY(-5px) scale(1.02); background: rgba(255, 255, 255, 0.9); }
+.scout-floating-card:hover { transform: translateY(-5px) scale(1.02); background: rgba(255, 255, 255, 0.6); }
 .scout-thumbs { display: flex; z-index: 2; position: relative; }
 .s-thumb { width: 35px; height: 35px; border-radius: 50%; border: 2px solid white; margin-left: -12px; overflow: hidden; background: #fff; box-shadow: var(--shadow-sm); }
 .s-thumb:first-child { margin-left: 0; }
@@ -133,53 +136,52 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 .section-title h2 { font-size: 1.8rem; font-weight: 800; color: var(--primary-color); margin-bottom: 8px; text-transform: uppercase; }
 .section-title p { color: var(--text-light); font-size: 1rem; }
 
-/* --- GALLERY GRID & SKELETON --- */
-.gallery-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 20px; margin-bottom: 30px;
-}
+/* --- GALLERY GRID (GLASS UNDER IMAGE FIX) --- */
+.gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
 .gallery-item {
-    position: relative; border-radius: 16px; overflow: hidden;
-    background: #fff; cursor: pointer;
-    height: 250px; display: none; 
+    position: relative; border-radius: 24px; cursor: pointer; height: 250px; display: none; 
+    padding: 12px; /* EKDOM CHOBIR MOTO GLASS ER FRAME */
     
-    /* --- THICK GLOSSY GLASS BORDER --- */
-    border: 10px solid rgba(255, 255, 255, 0.4); 
-    background-clip: padding-box;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+    /* GLASS EFFECT */
+    background: rgba(255, 255, 255, 0.35); 
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 .gallery-item.visible { display: block; }
 .gallery-item.animate-custom { animation: smoothFadeUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
 @keyframes smoothFadeUp { 0% { opacity: 0; transform: translateY(40px); } 100% { opacity: 1; transform: translateY(0); } }
 
-.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s ease; position: relative; z-index: 2; }
+.gallery-item img { 
+    width: 100%; height: 100%; object-fit: cover; 
+    border-radius: 12px; /* Image er nijo sho radius */
+    transition: 0.6s ease; position: relative; z-index: 2; 
+}
 .overlay {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; /* Fit inside the padding */
     background: rgba(15, 23, 42, 0.4); opacity: 0; transition: 0.3s;
-    display: flex; align-items: center; justify-content: center; z-index: 6;
+    display: flex; align-items: center; justify-content: center; z-index: 6; border-radius: 12px;
 }
 .overlay i {
     color: white; font-size: 1.5rem; transform: scale(0); transition: 0.3s;
     background: rgba(255,255,255,0.3); padding: 18px; border-radius: 50%; backdrop-filter: blur(8px);
 }
-.gallery-item:hover { transform: translateY(-5px); box-shadow: 0 20px 30px rgba(0,0,0,0.15); }
-.gallery-item:hover img { transform: scale(1.1); }
+.gallery-item:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+.gallery-item:hover img { transform: scale(1.05); }
 .gallery-item:hover .overlay { opacity: 1; }
 .gallery-item:hover .overlay i { transform: scale(1); }
 
 /* --- SKELETON LOADER ANIMATION --- */
 .skeleton-card {
-    height: 250px; border-radius: 16px; background: #e2e8f0;
-    position: relative; overflow: hidden; 
-    border: 10px solid rgba(255, 255, 255, 0.35); 
-    background-clip: padding-box;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    height: 250px; border-radius: 24px; position: relative; overflow: hidden; padding: 12px;
+    background: rgba(255, 255, 255, 0.35); backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.8);
 }
+.skeleton-card::before { content: ""; display: block; width: 100%; height: 100%; background: #e2e8f0; border-radius: 12px; }
 .skeleton-card::after {
-    content: ""; position: absolute; top: 0; right: 0; bottom: 0; left: 0;
-    transform: translateX(-100%);
-    background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.3) 20%, rgba(255, 255, 255, 0.6) 60%, rgba(255, 255, 255, 0));
-    animation: shimmer 1.5s infinite;
+    content: ""; position: absolute; top: 0; right: 0; bottom: 0; left: 0; transform: translateX(-100%);
+    background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.4) 20%, rgba(255, 255, 255, 0.8) 60%, rgba(255, 255, 255, 0));
+    animation: shimmer 1.5s infinite; z-index: 5;
 }
 @keyframes shimmer { 100% { transform: translateX(100%); } }
 
@@ -187,16 +189,18 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 
 /* --- OTHER ELEMENTS --- */
 .promo-card { 
-    background: #fff; border-radius: 25px; padding: 0; display: flex; align-items: stretch; position: relative; overflow: hidden; 
+    border-radius: 30px; display: flex; align-items: stretch; position: relative; 
     min-height: 280px; max-width: 800px; margin: 0 auto; 
+    padding: 15px; /* Glass Frame */
     
-    /* --- THICK GLOSSY GLASS BORDER --- */
-    border: 10px solid rgba(255, 255, 255, 0.35); 
-    background-clip: padding-box;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    /* GLASS EFFECT */
+    background: rgba(255, 255, 255, 0.35); 
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
 }
-.promo-image { width: 30%; position: relative; z-index: 2; }
-.promo-image img { width: 100%; height: 100%; object-fit: cover; display: block; border-top-left-radius: 15px; border-bottom-left-radius: 15px; }
+.promo-image { width: 30%; position: relative; z-index: 2; border-radius: 18px; overflow: hidden; }
+.promo-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .promo-content { width: 70%; padding: 25px 35px; display: flex; flex-direction: column; justify-content: center; text-align: left; position: relative; z-index: 2; }
 .info-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 15px; } 
 .info-item { display: flex; align-items: center; gap: 10px; color: var(--text-dark); font-size: 0.85rem; }
@@ -204,26 +208,29 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 
 .sdg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .sdg-card { 
-    background: white; border-radius: 20px; position: relative; overflow: hidden; text-decoration: none; color: inherit; transition: 0.3s; 
+    border-radius: 24px; position: relative; text-decoration: none; color: inherit; transition: 0.3s; 
+    padding: 12px; display: flex; flex-direction: column;
     
-    /* --- THICK GLOSSY GLASS BORDER --- */
-    border: 10px solid rgba(255, 255, 255, 0.35); 
-    background-clip: padding-box;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    /* GLASS EFFECT */
+    background: rgba(255, 255, 255, 0.35); 
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 .sdg-card:hover { transform: translateY(-8px); box-shadow: 0 20px 35px rgba(0,0,0,0.15); }
-.sdg-img { height: 160px; overflow: hidden; position: relative; z-index: 2; border-top-left-radius: 10px; border-top-right-radius: 10px; } 
+.sdg-img { height: 160px; overflow: hidden; position: relative; z-index: 2; border-radius: 12px; } 
 .sdg-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
 .sdg-card:hover .sdg-img img { transform: scale(1.1); }
-.sdg-text { padding: 20px; position: relative; z-index: 2; } .sdg-text h3 { font-size: 1rem; font-weight: 700; line-height: 1.4; }
+.sdg-text { padding: 15px 5px 5px 5px; position: relative; z-index: 2; } .sdg-text h3 { font-size: 1rem; font-weight: 700; line-height: 1.4; }
 
 .social-box { 
-    background: white; border-radius: 24px; padding: 30px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; position: relative; overflow: hidden;
+    border-radius: 30px; padding: 30px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; position: relative; 
     
-    /* --- THICK GLOSSY GLASS BORDER --- */
-    border: 10px solid rgba(255, 255, 255, 0.35); 
-    background-clip: padding-box;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    /* GLASS EFFECT */
+    background: rgba(255, 255, 255, 0.35); 
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 .social-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--text-dark); transition: 0.3s; width: 100px; position: relative; z-index: 2; }
 .social-item:hover { transform: translateY(-5px); }
@@ -241,15 +248,16 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(5px); z-index: 1000; display: none; justify-content: center; align-items: center; }
 .glass-modal { 
-    background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); width: 90%; max-width: 400px; border-radius: 24px; padding: 40px; text-align: center; animation: fadeIn 0.3s ease; position: relative; overflow: hidden;
+    width: 90%; max-width: 400px; border-radius: 30px; padding: 40px; text-align: center; animation: fadeIn 0.3s ease; position: relative; 
     
-    /* --- THICK GLOSSY GLASS BORDER --- */
-    border: 10px solid rgba(255, 255, 255, 0.35); 
-    background-clip: padding-box;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+    /* GLASS EFFECT */
+    background: rgba(255, 255, 255, 0.6); 
+    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
 }
-.modal-btn { display: block; padding: 15px; margin-bottom: 10px; background: rgba(255, 255, 255, 0.9); border-radius: 12px; text-decoration: none; color: var(--text-dark); font-weight: 600; transition: 0.2s; position: relative; z-index: 2; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); }
-.modal-btn:hover { background: var(--accent-color); color: white; border-color: var(--accent-color); }
+.modal-btn { display: block; padding: 15px; margin-bottom: 10px; background: rgba(255, 255, 255, 0.9); border-radius: 12px; text-decoration: none; color: var(--text-dark); font-weight: 600; transition: 0.2s; position: relative; z-index: 2; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+.modal-btn:hover { background: var(--accent-color); color: white; }
 @keyframes fadeIn { from{opacity:0; transform: scale(0.9);} to{opacity:1; transform: scale(1);} }
 
 /* --- WEATHER & CAMERA CSS --- */
@@ -288,14 +296,13 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 /* --- RESPONSIVE OPTIMIZATION (MOBILE SPEED FIX) --- */
 @media (max-width: 900px) {
     .hero-text h1 { font-size: 3rem; }
-    .hero-card-main { height: auto; flex-direction: column-reverse; padding-bottom: 0; }
-    .hero-image-side { width: 100%; height: 350px; }
-    .hero-text { width: 100%; padding: 40px 30px; text-align: center; }
-    .hero-image-side img { border-radius: 0; border-top-left-radius: 30px; border-top-right-radius: 30px; }
-    .scout-floating-card { bottom: 20px; right: 20px; padding: 10px 15px; backdrop-filter: none; background: rgba(255, 255, 255, 0.95); }
-    .promo-card { flex-direction: column; max-width: 100%; }
+    .hero-card-main { height: auto; flex-direction: column-reverse; padding: 15px; }
+    .hero-image-side { width: 100%; height: 350px; border-radius: 20px; }
+    .hero-text { width: 100%; padding: 40px 15px; text-align: center; }
+    .scout-floating-card { bottom: 20px; right: 20px; padding: 10px 15px; }
+    .promo-card { flex-direction: column; max-width: 100%; padding: 15px; }
     .promo-image { width: 100%; height: 250px; }
-    .promo-content { width: 100%; padding: 25px; text-align: center; }
+    .promo-content { width: 100%; padding: 25px 10px; text-align: center; }
     .info-item { justify-content: center; }
     .sdg-grid { grid-template-columns: 1fr; gap: 25px; padding: 0 15px; }
     .gallery-grid { grid-template-columns: repeat(2, 1fr); }
