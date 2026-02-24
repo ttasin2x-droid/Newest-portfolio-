@@ -68,16 +68,32 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 @keyframes runningShine { 0% { left: -100%; } 50% { left: 200%; } 100% { left: 200%; } }
 .btn-premium:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(37, 99, 235, 0.5); }
 
+
+/* --- PREMIUM GLASS SHINE ANIMATION --- */
+@keyframes premiumGlassShine {
+    0% { left: -100%; opacity: 0; }
+    10% { opacity: 1; }
+    20% { left: 200%; opacity: 0; }
+    100% { left: 200%; opacity: 0; }
+}
+.hero-card-main::before, .scout-floating-card::before, .gallery-item::before, .promo-card::before, .sdg-card::before, .social-box::before, .glass-modal::before {
+    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-25deg); animation: premiumGlassShine 6s infinite;
+    z-index: 5; pointer-events: none;
+}
+
+
 /* --- HERO SECTION --- */
 .hero-wrapper { padding: 40px 0; min-height: 90vh; display: flex; align-items: center; }
 .hero-card-main {
     background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
     border-radius: 40px; width: 100%; position: relative; overflow: hidden;
     box-shadow: var(--shadow-lg); 
-    border: 4px solid rgba(255, 255, 255, 0.4); /* --- THICKER TRANSPARENT STROKE --- */
+    border: 6px solid rgba(255, 255, 255, 0.15); /* MOTA & TRANSPARENT */
     display: flex; justify-content: space-between; align-items: center; height: 600px;
 }
-.hero-text { padding: 60px; width: 50%; z-index: 2; }
+.hero-text { padding: 60px; width: 50%; z-index: 2; position: relative; }
 .hero-text h1 {
     font-size: 4.5rem; line-height: 1; font-weight: 800; margin-bottom: 25px;
     background: linear-gradient(to right, #0f172a 20%, #2563eb 40%, #93c5fd 50%, #2563eb 60%, #0f172a 80%);
@@ -86,7 +102,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 }
 @keyframes shine { to { background-position: 200% center; } }
 .hero-text h4 { color: #444; font-size: 1.2rem; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
-.hero-image-side { width: 50%; height: 100%; position: relative; }
+.hero-image-side { width: 50%; height: 100%; position: relative; z-index: 2; }
 .hero-image-side img { width: 100%; height: 100%; object-fit: cover; border-top-left-radius: 40px; border-bottom-left-radius: 40px; }
 
 /* Floating Scout Card */
@@ -95,11 +111,11 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(8px);
     padding: 15px 25px; border-radius: 20px; display: flex; align-items: center;
     gap: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
-    border: 4px solid rgba(255, 255, 255, 0.4); /* --- THICKER TRANSPARENT STROKE --- */
-    cursor: pointer; transition: all 0.3s ease; z-index: 10; animation: float 4s ease-in-out infinite;
+    border: 6px solid rgba(255, 255, 255, 0.15); /* MOTA & TRANSPARENT */
+    cursor: pointer; transition: all 0.3s ease; z-index: 10; animation: float 4s ease-in-out infinite; overflow: hidden;
 }
 .scout-floating-card:hover { transform: translateY(-5px) scale(1.02); background: #fff; }
-.scout-thumbs { display: flex; }
+.scout-thumbs { display: flex; z-index: 2; position: relative; }
 .s-thumb { width: 35px; height: 35px; border-radius: 50%; border: 2px solid white; margin-left: -12px; overflow: hidden; background: #fff; box-shadow: var(--shadow-sm); }
 .s-thumb:first-child { margin-left: 0; }
 .s-thumb img { width: 100%; height: 100%; object-fit: cover; }
@@ -120,17 +136,17 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     position: relative; border-radius: 16px; overflow: hidden;
     background: #fff; box-shadow: var(--shadow-sm); cursor: pointer;
     height: 250px; display: none; 
-    border: 4px solid rgba(255, 255, 255, 0.4); /* --- THICKER TRANSPARENT STROKE --- */
+    border: 6px solid rgba(255, 255, 255, 0.15); /* MOTA & TRANSPARENT */
 }
 .gallery-item.visible { display: block; }
 .gallery-item.animate-custom { animation: smoothFadeUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
 @keyframes smoothFadeUp { 0% { opacity: 0; transform: translateY(40px); } 100% { opacity: 1; transform: translateY(0); } }
 
-.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s ease; }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s ease; position: relative; z-index: 2; }
 .overlay {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(15, 23, 42, 0.4); opacity: 0; transition: 0.3s;
-    display: flex; align-items: center; justify-content: center;
+    display: flex; align-items: center; justify-content: center; z-index: 6;
 }
 .overlay i {
     color: white; font-size: 1.5rem; transform: scale(0); transition: 0.3s;
@@ -145,7 +161,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 .skeleton-card {
     height: 250px; border-radius: 16px; background: #e2e8f0;
     position: relative; overflow: hidden; 
-    border: 4px solid rgba(255, 255, 255, 0.4); /* --- THICKER TRANSPARENT STROKE --- */
+    border: 6px solid rgba(255, 255, 255, 0.15); /* MOTA & TRANSPARENT */
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 .skeleton-card::after {
@@ -160,33 +176,33 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 
 /* --- OTHER ELEMENTS --- */
 .promo-card { 
-    background: #fff; border-radius: 25px; padding: 0; box-shadow: var(--shadow-lg); display: flex; align-items: stretch; overflow: hidden; 
-    border: 4px solid rgba(255, 255, 255, 0.4); /* --- THICKER TRANSPARENT STROKE --- */
+    background: #fff; border-radius: 25px; padding: 0; box-shadow: var(--shadow-lg); display: flex; align-items: stretch; position: relative; overflow: hidden; 
+    border: 6px solid rgba(255, 255, 255, 0.15); /* MOTA & TRANSPARENT */
     min-height: 280px; max-width: 800px; margin: 0 auto; 
 }
-.promo-image { width: 30%; position: relative; }
+.promo-image { width: 30%; position: relative; z-index: 2; }
 .promo-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.promo-content { width: 70%; padding: 25px 35px; display: flex; flex-direction: column; justify-content: center; text-align: left; }
+.promo-content { width: 70%; padding: 25px 35px; display: flex; flex-direction: column; justify-content: center; text-align: left; position: relative; z-index: 2; }
 .info-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 15px; } 
 .info-item { display: flex; align-items: center; gap: 10px; color: var(--text-dark); font-size: 0.85rem; }
 .info-item i { color: var(--accent-color); width: 20px; text-align: center; }
 
 .sdg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .sdg-card { 
-    background: white; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-sm); text-decoration: none; color: inherit; transition: 0.3s; 
-    border: 4px solid rgba(255, 255, 255, 0.4); /* --- THICKER TRANSPARENT STROKE --- */
+    background: white; border-radius: 20px; position: relative; overflow: hidden; box-shadow: var(--shadow-sm); text-decoration: none; color: inherit; transition: 0.3s; 
+    border: 6px solid rgba(255, 255, 255, 0.15); /* MOTA & TRANSPARENT */
 }
 .sdg-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
-.sdg-img { height: 160px; overflow: hidden; } 
+.sdg-img { height: 160px; overflow: hidden; position: relative; z-index: 2; } 
 .sdg-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
 .sdg-card:hover .sdg-img img { transform: scale(1.1); }
-.sdg-text { padding: 20px; } .sdg-text h3 { font-size: 1rem; font-weight: 700; line-height: 1.4; }
+.sdg-text { padding: 20px; position: relative; z-index: 2; } .sdg-text h3 { font-size: 1rem; font-weight: 700; line-height: 1.4; }
 
 .social-box { 
-    background: white; border-radius: 24px; padding: 30px; display: flex; justify-content: center; gap: 30px; box-shadow: var(--shadow-sm); flex-wrap: wrap; 
-    border: 4px solid rgba(255, 255, 255, 0.4); /* --- THICKER TRANSPARENT STROKE --- */
+    background: white; border-radius: 24px; padding: 30px; display: flex; justify-content: center; gap: 30px; box-shadow: var(--shadow-sm); flex-wrap: wrap; position: relative; overflow: hidden;
+    border: 6px solid rgba(255, 255, 255, 0.15); /* MOTA & TRANSPARENT */
 }
-.social-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--text-dark); transition: 0.3s; width: 100px; }
+.social-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--text-dark); transition: 0.3s; width: 100px; position: relative; z-index: 2; }
 .social-item:hover { transform: translateY(-5px); }
 .s-icon { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 10px; transition: 0.3s; }
 .fb .s-icon { background: #e7f5ff; color: #1877f2; } .insta .s-icon { background: #fff0f5; color: #E1306C; } .wa .s-icon { background: #e8f5e9; color: #25D366; }
@@ -202,10 +218,10 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(5px); z-index: 1000; display: none; justify-content: center; align-items: center; }
 .glass-modal { 
-    background: rgba(255, 255, 255, 0.95); width: 90%; max-width: 400px; border-radius: 24px; padding: 40px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); animation: fadeIn 0.3s ease; 
-    border: 4px solid rgba(255, 255, 255, 0.4); /* --- THICKER TRANSPARENT STROKE --- */
+    background: rgba(255, 255, 255, 0.95); width: 90%; max-width: 400px; border-radius: 24px; padding: 40px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); animation: fadeIn 0.3s ease; position: relative; overflow: hidden;
+    border: 6px solid rgba(255, 255, 255, 0.15); /* MOTA & TRANSPARENT */
 }
-.modal-btn { display: block; padding: 15px; margin-bottom: 10px; background: #f8fafc; border-radius: 12px; text-decoration: none; color: var(--text-dark); font-weight: 600; transition: 0.2s; }
+.modal-btn { display: block; padding: 15px; margin-bottom: 10px; background: #f8fafc; border-radius: 12px; text-decoration: none; color: var(--text-dark); font-weight: 600; transition: 0.2s; position: relative; z-index: 2; }
 .modal-btn:hover { background: var(--accent-color); color: white; }
 @keyframes fadeIn { from{opacity:0; transform: scale(0.9);} to{opacity:1; transform: scale(1);} }
 
