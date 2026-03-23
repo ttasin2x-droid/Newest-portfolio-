@@ -203,21 +203,13 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     position: absolute;
     inset: 0;
     border-radius: 30px;
-    padding: 4px; /* Border aro mota kora holo (3px -> 4px) */
-    
-    /* Ebar white band onnek boro r sharp kora holo */
+    padding: 4px; 
     background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 20%, #ffffff 40%, #ffffff 60%, rgba(255,255,255,0.6) 80%, transparent 100%);
     background-size: 200% 100%;
-    
-    /* Mask the inside */
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
-    
-    /* Ekta glowing drop shadow add kora holo jate chokhe aalo baje */
     filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
-    
-    /* Speed ektu fast kora holo (2s) */
     animation: runLighting 2s linear infinite;
     z-index: -1;
 }
@@ -227,7 +219,6 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     100% { background-position: -200% 0; }
 }
 
-/* Hover Effect - Brighter glass reflection */
 .creation-item:hover {
     transform: translateY(-4px);
     background: rgba(255, 255, 255, 0.6); 
@@ -240,7 +231,6 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     height: 26px;
     object-fit: contain;
 }
-
 
 /* --- MY CREATIONS SECTION TITLE ANIMATION --- */
 .my-creations-section .section-title h2 {
@@ -349,10 +339,23 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .glass-modal { backdrop-filter: none; }
     .skeleton-card::after { animation: none; background: #f1f5f9; }
     
-    .creation-bar { padding: 15px; }
-    .creation-item { width: 100%; justify-content: center; }
+    /* MOBILE CREATION BAR FIX - Pasapashi & No Break */
+    .creation-bar { padding: 10px; gap: 10px; }
+    .creation-item { 
+        width: auto; /* width 100% remove kora hoyeche jate stack na hoy */
+        justify-content: center; 
+        padding: 8px 15px; 
+        font-size: 0.85rem; 
+        white-space: nowrap; /* Text jeno konovabe niche na jay */
+    }
+    .creation-item img { width: 22px; height: 22px; }
 }
+
 @media (max-width: 600px) {
     .gallery-grid { grid-template-columns: 1fr; }
     .sdg-grid { grid-template-columns: 1fr; }
+    
+    /* Mobile er thekeo choto screen er jonno fix */
+    .creation-item { padding: 6px 12px; font-size: 0.75rem; }
+    .creation-item img { width: 20px; height: 20px; }
 }
