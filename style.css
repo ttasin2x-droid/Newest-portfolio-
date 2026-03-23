@@ -176,8 +176,8 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     gap: 20px; 
     background: transparent; 
     padding: 15px;
-    flex-wrap: wrap;
-    max-width: 650px;
+    /* max-width and flex-wrap removed from here to handle responsiveness better */
+    max-width: 800px;
     margin: 0 auto;
 }
 
@@ -339,14 +339,27 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .glass-modal { backdrop-filter: none; }
     .skeleton-card::after { animation: none; background: #f1f5f9; }
     
-    /* MOBILE CREATION BAR FIX - Pasapashi & No Break */
-    .creation-bar { padding: 10px; gap: 10px; }
+    /* MOBILE CREATION BAR FIX - Force side-by-side & Allow swipe */
+    .creation-bar { 
+        padding: 10px; 
+        gap: 12px; 
+        flex-wrap: nowrap; /* Ekdom pasapashi rakhbe, kono vabe niche nambe na */
+        overflow-x: auto; /* Screen choto hole horizontally swipe kora jabe */
+        justify-content: flex-start; /* Swipe smooth korar jonno */
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Scrollbar hide korar jonno jeno clean dekha jay */
+    .creation-bar::-webkit-scrollbar { display: none; }
+    .creation-bar { -ms-overflow-style: none; scrollbar-width: none; }
+    
     .creation-item { 
-        width: auto; /* width 100% remove kora hoyeche jate stack na hoy */
+        width: auto; 
+        flex: 0 0 auto; /* Button jeno choto hoye venge na jay */
         justify-content: center; 
-        padding: 8px 15px; 
+        padding: 8px 16px; 
         font-size: 0.85rem; 
-        white-space: nowrap; /* Text jeno konovabe niche na jay */
+        white-space: nowrap; /* Text ar Logo jeno eksathei thake */
     }
     .creation-item img { width: 22px; height: 22px; }
 }
@@ -355,7 +368,6 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .gallery-grid { grid-template-columns: 1fr; }
     .sdg-grid { grid-template-columns: 1fr; }
     
-    /* Mobile er thekeo choto screen er jonno fix */
-    .creation-item { padding: 6px 12px; font-size: 0.75rem; }
+    .creation-item { padding: 8px 14px; font-size: 0.8rem; gap: 8px; }
     .creation-item img { width: 20px; height: 20px; }
 }
