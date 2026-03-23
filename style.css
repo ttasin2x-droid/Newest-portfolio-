@@ -168,14 +168,13 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 
 .load-more-container { text-align: center; margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
 
-
-/* --- MY CREATIONS BAR (TRANSPARENT + WHITE LIGHTNING BORDER) --- */
+/* --- MY CREATIONS BAR (TRANSPARENT + INTENSE WHITE LIGHTNING BORDER) --- */
 .creation-bar {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 20px; 
-    background: transparent; /* Transparent container */
+    background: transparent; 
     padding: 15px;
     flex-wrap: wrap;
     max-width: 650px;
@@ -193,27 +192,30 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     padding: 10px 22px;
     border-radius: 30px;
     transition: all 0.4s ease;
-    background: transparent; /* Button background transparent */
+    background: transparent; 
     position: relative;
     z-index: 1;
 }
 
-/* The Magic White Lightning Border */
+/* Enhanced Flash Lighting Border */
 .creation-item::before {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: 30px;
-    padding: 2px; /* Border thickness */
-    /* Beautiful white glowing gradient */
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
+    padding: 3px; /* 2px theke 3px kora holo jate lighting ta mota lage */
+    
+    /* Pure white gradient with a longer trail for a "flash" effect */
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 30%, #ffffff 50%, rgba(255,255,255,0.4) 70%, transparent 100%);
     background-size: 200% 100%;
+    
     /* Masks out the inside so only the border shows */
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
-    /* Slow continuous run */
-    animation: runLighting 3.5s linear infinite;
+    
+    /* Ektu fast kora holo (3.5s theke 2.5s) */
+    animation: runLighting 2.5s linear infinite;
     z-index: -1;
 }
 
@@ -225,9 +227,9 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 /* Hover Effect - Subtle white glass reflection */
 .creation-item:hover {
     transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.4); /* Gentle white glass fill */
+    background: rgba(255, 255, 255, 0.6); /* Ektu beshi white hover effect */
     color: var(--accent-color);
-    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.8);
 }
 
 .creation-item img {
