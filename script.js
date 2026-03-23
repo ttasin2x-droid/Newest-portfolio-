@@ -56,21 +56,17 @@ onValue(ref(db, 'site_content'), (snap) => {
 onValue(ref(db, 'hero'), (snap) => { if(snap.val()?.imageUrl) document.getElementById('dynamicHeroImg').src = snap.val().imageUrl; });
 onValue(ref(db, 'profile'), (snap) => { if(snap.val()?.imageUrl) document.getElementById('dynamicProfileImg').src = snap.val().imageUrl; });
 
-// 1. HOME WORKS (Updated with Skeleton Logic)
+// 1. HOME WORKS 
 const galleryGrid = document.getElementById('galleryGrid');
 if(galleryGrid) { 
     onValue(ref(db, 'home_works'), (snap) => { 
         const data = snap.val(); 
-        
-        // ডেটা পেলে Skeleton সরিয়ে ফেলা হবে, না পেলে মেসেজ দেখাবে
         galleryGrid.innerHTML = ""; 
-        
         if(data) { 
             const images = Object.values(data).reverse(); 
             images.forEach((item, index) => { 
                 const div = document.createElement('div'); 
                 div.className = "gallery-item"; 
-                // অ্যানিমেশন একটু ফাস্ট করার জন্য ডিলে কমানো হলো
                 div.setAttribute('data-aos', 'fade-up'); 
                 div.setAttribute('data-aos-delay', (index % 4) * 50); 
                 div.setAttribute('onclick', `window.openLightboxFromURL('${item.url}')`); 
@@ -87,9 +83,35 @@ if(galleryGrid) {
 
 // 2. SDGs
 const sdgGrid = document.getElementById('sdgGrid');
-if(sdgGrid) { onValue(ref(db, 'sdgs'), (snap) => { const data = snap.val(); sdgGrid.innerHTML = ""; if(data) Object.values(data).reverse().forEach((item, index) => { sdgGrid.innerHTML += ` <a href="${item.link}" target="_blank" class="sdg-card" data-aos="fade-up" data-aos-delay="${(index % 3) * 100}"> <div class="sdg-img"><img src="${item.image}"></div> <div class="sdg-text"><h3>${item.title}</h3></div> </a>`; }); }); }
+if(sdgGrid) { 
+    onValue(ref(db, 'sdgs'), (snap) => { 
+        const data = snap.val(); sdgGrid.innerHTML = ""; 
+        if(data) Object.values(data).reverse().forEach((item, index) => { 
+            sdgGrid.innerHTML += ` <a href="${item.link}" target="_blank" class="sdg-card" data-aos="fade-up" data-aos-delay="${(index % 3) * 100}"> <div class="sdg-img"><img src="${item.image}"></div> <div class="sdg-text"><h3>${item.title}</h3></div> </a>`; 
+        }); 
+    }); 
+}
 
-// 3. PHOTOGRAPHY
+// 3. MY CREATIONS (Ekhanei aager bar miss hoye giyechilo)
+const creationsBar = document.getElementById('creationsBar');
+if(creationsBar) { 
+    onValue(ref(db, 'creations'), (snap) => { 
+        const data = snap.val(); 
+        if(data) {
+            creationsBar.innerHTML = ""; // aager code muchhe notun data boshabe
+            // reverse() korar fole latest upload kora ta aage show korbe
+            Object.values(data).reverse().forEach((item) => { 
+                creationsBar.innerHTML += `
+                <a href="${item.link}" target="_blank" class="creation-item">
+                    <img src="${item.image}" alt="${item.title}">
+                    <span>${item.title}</span>
+                </a>`; 
+            }); 
+        } 
+    }); 
+}
+
+// 4. PHOTOGRAPHY
 const photoGrid = document.getElementById('photoGrid');
 if (photoGrid) {
     onValue(ref(db, 'home_photography'), (snap) => {
@@ -124,18 +146,24 @@ window.goToPage = (url) => { document.getElementById('pageTransition').classList
 window.closeLightbox = (event) => { if (event.target.id === 'lightbox' || event.target.tagName === 'I') { document.getElementById('lightbox').classList.remove('active'); document.body.style.overflow = 'auto'; } }
 window.scrollToTop = () => { window.scrollTo({top: 0, behavior: 'smooth'}); }
 
-// --- FAST PRELOADER FIX (Reduced Timeout) ---
-window.onload = function() { 
+// --- FAST PRELOADER FIX ---
+function removePreloader() { 
     createSoftSnowfall(); 
     if(typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true }); 
 
     const loader = document.getElementById('site-preloader');
     if(loader) { 
         loader.style.opacity = '0'; 
-        // Changed from 600ms to 200ms for faster interaction
         setTimeout(() => loader.remove(), 200); 
     }
-};
+}
+
+if (document.readyState === 'complete') {
+    removePreloader();
+} else {
+    window.addEventListener('load', removePreloader);
+}
+setTimeout(removePreloader, 3000); // 3 second fallback force-remove
 
 window.onscroll = function() { const btn = document.getElementById("backToTop"); if(btn) btn.style.display = (window.scrollY > 300) ? "flex" : "none"; };
 function createSoftSnowfall() { const container = document.getElementById('weather-container'); if(!container) return; for (let i = 0; i < 35; i++) { const flake = document.createElement('div'); flake.classList.add('snowflake'); flake.innerHTML = '❄'; flake.style.left = Math.random() * 100 + 'vw'; flake.style.animationDuration = `${Math.random() * 10 + 5}s, ${Math.random() * 4 + 3}s`; flake.style.animationDelay = Math.random() * 5 + 's'; container.appendChild(flake); } setTimeout(() => { container.style.opacity = '0'; }, 6000); }
