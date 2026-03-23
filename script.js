@@ -56,7 +56,7 @@ onValue(ref(db, 'site_content'), (snap) => {
 onValue(ref(db, 'hero'), (snap) => { if(snap.val()?.imageUrl) document.getElementById('dynamicHeroImg').src = snap.val().imageUrl; });
 onValue(ref(db, 'profile'), (snap) => { if(snap.val()?.imageUrl) document.getElementById('dynamicProfileImg').src = snap.val().imageUrl; });
 
-// 1. HOME WORKS 
+// 1. HOME WORKS
 const galleryGrid = document.getElementById('galleryGrid');
 if(galleryGrid) { 
     onValue(ref(db, 'home_works'), (snap) => { 
@@ -92,14 +92,14 @@ if(sdgGrid) {
     }); 
 }
 
-// 3. MY CREATIONS (Ekhanei aager bar miss hoye giyechilo)
+// 3. MY CREATIONS (Ekhanei aager bar miss hoyechilo, ebar perfect ache)
 const creationsBar = document.getElementById('creationsBar');
 if(creationsBar) { 
     onValue(ref(db, 'creations'), (snap) => { 
         const data = snap.val(); 
         if(data) {
-            creationsBar.innerHTML = ""; // aager code muchhe notun data boshabe
-            // reverse() korar fole latest upload kora ta aage show korbe
+            creationsBar.innerHTML = ""; // Website e ache emon dummy logogulo muche felbe
+            // Firebase theke asha shob creations show korabe
             Object.values(data).reverse().forEach((item) => { 
                 creationsBar.innerHTML += `
                 <a href="${item.link}" target="_blank" class="creation-item">
