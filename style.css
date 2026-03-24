@@ -226,50 +226,39 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     border-color: rgba(37, 99, 235, 0.3);
 }
 
-/* 🌟 AUTO-LOOPING 3D LOGO EFFECT START 🌟 */
+/* 🌟 4 SECOND LOOP 3D FLIP & POP ANIMATION 🌟 */
+@keyframes popAndFlipLoop {
+    0%, 75% {
+        /* Rest state: 0 to 3 seconds (Normal) */
+        transform: perspective(600px) translateY(0) scale(1) rotateY(0deg);
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+    }
+    85% {
+        /* Action state: pops up and flips halfway */
+        transform: perspective(600px) translateY(-12px) scale(1.35) rotateY(180deg);
+        filter: drop-shadow(0 15px 12px rgba(37, 99, 235, 0.4));
+    }
+    95%, 100% {
+        /* Completion: lands smoothly completing 360 degree spin */
+        transform: perspective(600px) translateY(0) scale(1) rotateY(360deg);
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+    }
+}
+
 .creation-item img {
     width: 28px; 
     height: 28px;
     object-fit: contain;
     position: relative;
     z-index: 2;
-    /* Total 5 Seconds: 1s animation, 4s Theme thakbe */
-    animation: autoPopSpin 5s ease-in-out infinite;
+    /* Ekhane 4 seconds er auto animation add kora holo */
+    animation: popAndFlipLoop 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
-
-/* Delay for cascade effect - makes them pop one after another */
-.creation-item:nth-child(1) img { animation-delay: 0s; }
-.creation-item:nth-child(2) img { animation-delay: 0.3s; }
-.creation-item:nth-child(3) img { animation-delay: 0.6s; }
-.creation-item:nth-child(4) img { animation-delay: 0.9s; }
-
-/* Loop Keyframes */
-@keyframes autoPopSpin {
-    0% { 
-        transform: scale(1) translateY(0) rotate(0deg); 
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15)); 
-    }
-    10% { 
-        /* Ekta chotpot round and jump */
-        transform: scale(1.3) translateY(-8px) rotate(180deg); 
-        filter: drop-shadow(4px 10px 8px rgba(0, 0, 0, 0.3)); 
-    }
-    20% { 
-        transform: scale(1) translateY(0) rotate(360deg); 
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15)); 
-    }
-    100% { 
-        transform: scale(1) translateY(0) rotate(360deg); 
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15)); 
-    }
-}
-/* 🌟 AUTO-LOOPING 3D LOGO EFFECT END 🌟 */
 
 .creation-item span {
     position: relative;
     z-index: 2;
 }
-
 
 /* --- MY CREATIONS SECTION TITLE ANIMATION --- */
 .my-creations-section .section-title h2 {
@@ -377,33 +366,55 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .snowflake { display: none; }
     .glass-modal { backdrop-filter: none; }
     .skeleton-card::after { animation: none; background: #f1f5f9; }
+    
+    /* 🔥 BULLETPROOF MOBILE CREATION BAR FIX 🔥 */
+    .creation-bar { 
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important; 
+        align-items: center !important;
+        padding: 15px 10px !important;
+        gap: 15px !important;
+        width: 100%;
+        margin: 0 auto !important;
+    }
+    
+    .creation-item { 
+        display: flex !important;
+        flex-direction: column !important; /* Force Logo Upore, Name Niche */
+        align-items: center !important;
+        justify-content: center !important;
+        width: auto !important;
+        min-width: 110px !important; 
+        max-width: 140px !important;
+        padding: 15px 10px !important; 
+        border-radius: 20px !important;
+    }
+    
+    .creation-item img { 
+        width: 38px !important; /* Mobile eo ektu boro dekhabe */
+        height: 38px !important; 
+        margin-bottom: 8px !important;
+        margin-right: 0 !important;
+    }
+
+    .creation-item span {
+        font-size: 0.75rem !important;
+        text-align: center !important;
+        white-space: normal !important; 
+        line-height: 1.2 !important;
+    }
+    
+    .creation-item::before { 
+        border-radius: 20px !important; 
+    }
 }
 
 @media (max-width: 600px) {
     .gallery-grid { grid-template-columns: 1fr; }
     .sdg-grid { grid-template-columns: 1fr; }
     
-    .creation-bar {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-        padding: 10px !important;
-        gap: 12px !important;
-    }
-    
-    .creation-item { 
-        padding: 10px 18px !important; 
-        font-size: 0.85rem !important;
-        border-radius: 30px !important;
-        width: auto !important;
-        min-width: 0 !important;
-        flex-direction: row !important; 
-    }
-    
-    .creation-item img { 
-        width: 25px !important; 
-        height: 25px !important; 
-        margin-bottom: 0 !important; 
-        margin-right: 2px !important;
-    }
+    .creation-item { min-width: 100px !important; padding: 12px 8px !important; }
+    .creation-item img { width: 35px !important; height: 35px !important; margin-bottom: 6px !important;}
+    .creation-item span { font-size: 0.7rem !important; }
 }
