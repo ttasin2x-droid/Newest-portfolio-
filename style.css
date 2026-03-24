@@ -200,22 +200,33 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
     position: relative;
-    overflow: hidden;
+    /* overflow: hidden;  <-- REMOVED TO FIX LOGO CLIPPING */
 }
 
+/* Elegant Shine Effect (Only on Hover) - Updated to fix clipping */
 .creation-item::after {
     content: '';
     position: absolute;
-    top: 0; left: -100%;
-    width: 50%; height: 100%;
-    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%);
-    transform: skewX(-25deg);
-    transition: 0.5s;
+    inset: 0; /* Keeps it inside the borders */
+    border-radius: inherit;
+    /* We use background position sweep instead of moving the whole element */
+    background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.8) 50%, transparent 100%);
+    background-size: 200% 100%;
+    background-position: -100% 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
     z-index: 1;
+    pointer-events: none;
 }
 
 .creation-item:hover::after {
-    animation: premiumSweep 0.7s forwards;
+    opacity: 1;
+    animation: premiumSweep 0.8s forwards;
+}
+
+@keyframes premiumSweep {
+    0% { background-position: -100% 0; }
+    100% { background-position: 200% 0; }
 }
 
 .creation-item:hover {
@@ -229,17 +240,14 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 /* 🌟 4 SECOND LOOP 3D FLIP & POP ANIMATION 🌟 */
 @keyframes popAndFlipLoop {
     0%, 75% {
-        /* Rest state: 0 to 3 seconds (Normal) */
         transform: perspective(600px) translateY(0) scale(1) rotateY(0deg);
         filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
     }
     85% {
-        /* Action state: pops up and flips halfway */
-        transform: perspective(600px) translateY(-12px) scale(1.35) rotateY(180deg);
+        transform: perspective(600px) translateY(-14px) scale(1.35) rotateY(180deg);
         filter: drop-shadow(0 15px 12px rgba(37, 99, 235, 0.4));
     }
     95%, 100% {
-        /* Completion: lands smoothly completing 360 degree spin */
         transform: perspective(600px) translateY(0) scale(1) rotateY(360deg);
         filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
     }
@@ -251,7 +259,6 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     object-fit: contain;
     position: relative;
     z-index: 2;
-    /* Ekhane 4 seconds er auto animation add kora holo */
     animation: popAndFlipLoop 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
@@ -370,29 +377,32 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     /* 🔥 BULLETPROOF MOBILE CREATION BAR FIX 🔥 */
     .creation-bar { 
         display: flex !important;
-        flex-wrap: wrap !important;
-        justify-content: center !important; 
-        align-items: center !important;
+        flex-wrap: nowrap !important; /* Forces single horizontal line */
+        overflow-x: auto !important;  /* Enables swiping if too many items */
+        justify-content: center !important; /* Perfect Center Alignment */
         padding: 15px 10px !important;
         gap: 15px !important;
+        -webkit-overflow-scrolling: touch;
         width: 100%;
-        margin: 0 auto !important;
     }
+    
+    /* Hide Scrollbar */
+    .creation-bar::-webkit-scrollbar { display: none; }
+    .creation-bar { -ms-overflow-style: none; scrollbar-width: none; }
     
     .creation-item { 
         display: flex !important;
-        flex-direction: column !important; /* Force Logo Upore, Name Niche */
+        flex-direction: column !important; /* Logo Upore, Name Niche */
         align-items: center !important;
         justify-content: center !important;
-        width: auto !important;
+        flex-shrink: 0 !important; /* PROTECTS FROM SQUISHING */
         min-width: 110px !important; 
-        max-width: 140px !important;
         padding: 15px 10px !important; 
         border-radius: 20px !important;
     }
     
     .creation-item img { 
-        width: 38px !important; /* Mobile eo ektu boro dekhabe */
+        width: 38px !important; 
         height: 38px !important; 
         margin-bottom: 8px !important;
         margin-right: 0 !important;
@@ -403,10 +413,6 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
         text-align: center !important;
         white-space: normal !important; 
         line-height: 1.2 !important;
-    }
-    
-    .creation-item::before { 
-        border-radius: 20px !important; 
     }
 }
 
