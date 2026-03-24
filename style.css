@@ -176,7 +176,8 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     align-items: center;
     flex-wrap: wrap;
     gap: 20px; 
-    padding: 15px;
+    /* Ekhane padding barano hoyeche jate logo kete na jay */
+    padding: 25px 15px;
     max-width: 900px;
     margin: 0 auto;
 }
@@ -184,7 +185,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
 .creation-item {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
     text-decoration: none;
     color: var(--text-dark);
     font-weight: 700;
@@ -200,16 +201,14 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
     position: relative;
-    /* overflow: hidden;  <-- REMOVED TO FIX LOGO CLIPPING */
+    /* overflow: hidden Soriye deya hoyese jate kono kisu clip na hoy */
 }
 
-/* Elegant Shine Effect (Only on Hover) - Updated to fix clipping */
 .creation-item::after {
     content: '';
     position: absolute;
-    inset: 0; /* Keeps it inside the borders */
+    inset: 0;
     border-radius: inherit;
-    /* We use background position sweep instead of moving the whole element */
     background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.8) 50%, transparent 100%);
     background-size: 200% 100%;
     background-position: -100% 0;
@@ -244,7 +243,8 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
         filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
     }
     85% {
-        transform: perspective(600px) translateY(-14px) scale(1.35) rotateY(180deg);
+        /* Uchu popout and Flip */
+        transform: perspective(600px) translateY(-15px) scale(1.35) rotateY(180deg);
         filter: drop-shadow(0 15px 12px rgba(37, 99, 235, 0.4));
     }
     95%, 100% {
@@ -377,42 +377,40 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     /* 🔥 BULLETPROOF MOBILE CREATION BAR FIX 🔥 */
     .creation-bar { 
         display: flex !important;
-        flex-wrap: nowrap !important; /* Forces single horizontal line */
-        overflow-x: auto !important;  /* Enables swiping if too many items */
-        justify-content: center !important; /* Perfect Center Alignment */
-        padding: 15px 10px !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important; 
+        justify-content: flex-start !important; 
+        /* Ekhane 35px padding add kora holo jate Logo pop-out korle matha na kete jay */
+        padding: 35px 15px !important;
         gap: 15px !important;
         -webkit-overflow-scrolling: touch;
         width: 100%;
     }
     
-    /* Hide Scrollbar */
     .creation-bar::-webkit-scrollbar { display: none; }
     .creation-bar { -ms-overflow-style: none; scrollbar-width: none; }
     
     .creation-item { 
         display: flex !important;
-        flex-direction: column !important; /* Logo Upore, Name Niche */
+        flex-direction: row !important; /* Logo r Name ebar PASAPASHI thakbe */
         align-items: center !important;
         justify-content: center !important;
-        flex-shrink: 0 !important; /* PROTECTS FROM SQUISHING */
-        min-width: 110px !important; 
-        padding: 15px 10px !important; 
-        border-radius: 20px !important;
+        flex-shrink: 0 !important; 
+        width: auto !important;
+        padding: 10px 20px !important; 
+        border-radius: 30px !important;
     }
     
     .creation-item img { 
-        width: 38px !important; 
-        height: 38px !important; 
-        margin-bottom: 8px !important;
-        margin-right: 0 !important;
+        width: 28px !important; 
+        height: 28px !important; 
+        margin-bottom: 0 !important;
+        margin-right: 10px !important; /* Text theke ektu durutto */
     }
 
     .creation-item span {
-        font-size: 0.75rem !important;
-        text-align: center !important;
-        white-space: normal !important; 
-        line-height: 1.2 !important;
+        font-size: 0.85rem !important;
+        white-space: nowrap !important; /* Ek line ei thakbe */
     }
 }
 
@@ -420,7 +418,8 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .gallery-grid { grid-template-columns: 1fr; }
     .sdg-grid { grid-template-columns: 1fr; }
     
-    .creation-item { min-width: 100px !important; padding: 12px 8px !important; }
-    .creation-item img { width: 35px !important; height: 35px !important; margin-bottom: 6px !important;}
-    .creation-item span { font-size: 0.7rem !important; }
+    .creation-bar { padding: 35px 10px !important; }
+    .creation-item { padding: 10px 15px !important; }
+    .creation-item img { width: 24px !important; height: 24px !important; margin-right: 8px !important; }
+    .creation-item span { font-size: 0.8rem !important; }
 }
