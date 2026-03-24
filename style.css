@@ -338,29 +338,30 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .glass-modal { backdrop-filter: none; }
     .skeleton-card::after { animation: none; background: #f1f5f9; }
     
-    /* 🔥 BULLETPROOF MOBILE CREATION BAR FIX 🔥 */
+    /* 🔥 BULLETPROOF MOBILE CREATION BAR FIX - CENTER ALIGNED 🔥 */
     .creation-bar { 
         display: flex !important;
-        flex-wrap: nowrap !important; /* Forces single horizontal line */
-        overflow-x: auto !important;  /* Enables swiping */
-        justify-content: flex-start !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        justify-content: center !important; /* FIXED: Now it will center perfectly */
         padding: 15px 10px !important;
         gap: 15px !important;
         -webkit-overflow-scrolling: touch;
         width: 100%;
+        margin: 0 auto !important;
     }
     
-    /* Hide Scrollbar to keep it clean */
+    /* Hide Scrollbar */
     .creation-bar::-webkit-scrollbar { display: none; }
     .creation-bar { -ms-overflow-style: none; scrollbar-width: none; }
     
     .creation-item { 
         display: flex !important;
-        flex-direction: column !important; /* Puts Logo on top, Text on bottom */
+        flex-direction: column !important; 
         align-items: center !important;
         justify-content: center !important;
-        flex: 0 0 auto !important; /* STOPS IT FROM SHRINKING */
-        min-width: 110px !important; /* Fixed width so they stay as perfect boxes */
+        flex: 0 0 auto !important; 
+        min-width: 110px !important; 
         padding: 15px 10px !important; 
         border-radius: 20px !important;
     }
@@ -375,7 +376,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .creation-item span {
         font-size: 0.75rem !important;
         text-align: center !important;
-        white-space: normal !important; /* Allows text to wrap to 2nd line if too long */
+        white-space: normal !important; 
         line-height: 1.2 !important;
     }
     
@@ -388,7 +389,6 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .gallery-grid { grid-template-columns: 1fr; }
     .sdg-grid { grid-template-columns: 1fr; }
     
-    /* Tweaks for very small screens */
     .creation-item { min-width: 100px !important; padding: 12px 8px !important; }
     .creation-item img { width: 30px !important; height: 30px !important; }
     .creation-item span { font-size: 0.7rem !important; }
