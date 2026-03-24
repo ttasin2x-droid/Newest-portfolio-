@@ -338,30 +338,26 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .glass-modal { backdrop-filter: none; }
     .skeleton-card::after { animation: none; background: #f1f5f9; }
     
-    /* 🔥 BULLETPROOF MOBILE CREATION BAR FIX - CENTER ALIGNED 🔥 */
+    /* 🔥 MOBILE CREATION BAR FIX - HARD CENTERED 🔥 */
     .creation-bar { 
         display: flex !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        justify-content: center !important; /* FIXED: Now it will center perfectly */
+        flex-wrap: wrap !important; /* Swipe bad diye wrap kora holo */
+        justify-content: center !important; /* Ekdom perfect majhkhane thakbe */
+        align-items: center !important;
         padding: 15px 10px !important;
         gap: 15px !important;
-        -webkit-overflow-scrolling: touch;
         width: 100%;
         margin: 0 auto !important;
     }
     
-    /* Hide Scrollbar */
-    .creation-bar::-webkit-scrollbar { display: none; }
-    .creation-bar { -ms-overflow-style: none; scrollbar-width: none; }
-    
     .creation-item { 
         display: flex !important;
-        flex-direction: column !important; 
+        flex-direction: column !important; /* Logo upore, Nam niche */
         align-items: center !important;
         justify-content: center !important;
-        flex: 0 0 auto !important; 
+        width: auto !important;
         min-width: 110px !important; 
+        max-width: 140px !important;
         padding: 15px 10px !important; 
         border-radius: 20px !important;
     }
@@ -369,7 +365,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .creation-item img { 
         width: 35px !important; 
         height: 35px !important; 
-        margin-bottom: 5px !important;
+        margin-bottom: 8px !important;
         margin-right: 0 !important;
     }
 
@@ -390,6 +386,6 @@ body { background-color: var(--bg-color); color: var(--text-dark); position: rel
     .sdg-grid { grid-template-columns: 1fr; }
     
     .creation-item { min-width: 100px !important; padding: 12px 8px !important; }
-    .creation-item img { width: 30px !important; height: 30px !important; }
+    .creation-item img { width: 30px !important; height: 30px !important; margin-bottom: 6px !important;}
     .creation-item span { font-size: 0.7rem !important; }
 }
