@@ -1,186 +1,205 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getDatabase, ref, onValue, runTransaction, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-const firebaseConfig = { 
-    apiKey: "AIzaSyDNtkM7hLeIsD2HzWxQKJFH8fsXOVKrv18", 
-    authDomain: "tanvir-gallery-free.firebaseapp.com", 
-    databaseURL: "https://tanvir-gallery-free-default-rtdb.firebaseio.com", 
-    projectId: "tanvir-gallery-free", 
-    storageBucket: "tanvir-gallery-free.firebasestorage.app", 
-    messagingSenderId: "442605910126", 
-    appId: "1:442605910126:web:b89792cb6204a5b7eb0e7f" 
-};
+const firebaseConfig = { apiKey: "AIzaSyDNtkM7hLeIsD2HzWxQKJFH8fsXOVKrv18", authDomain: "tanvir-gallery-free.firebaseapp.com", databaseURL: "https://tanvir-gallery-free-default-rtdb.firebaseio.com", projectId: "tanvir-gallery-free", storageBucket: "tanvir-gallery-free.firebasestorage.app", messagingSenderId: "442605910126", appId: "1:442605910126:web:b89792cb6204a5b7eb0e7f" };
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// --- 1. CLEAN PRELOADER ---
-const preloaderHTML = `<div id="site-preloader" style="position:fixed; inset:0; background:#f8fafc; z-index:99999; display:flex; justify-content:center; align-items:center; transition:opacity 0.5s ease;"><div style="width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top-color: #2563eb; border-radius: 50%; animation: spin 1s linear infinite;"></div><style>@keyframes spin { 100% { transform: rotate(360deg); } }</style></div>`;
+// --- 1. PREMIUM SITE PRELOADER ---
+const preloaderHTML = `<div id="site-preloader" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#ffffff; z-index:99999; display:flex; flex-direction:column; justify-content:center; align-items:center; transition:opacity 0.6s ease-out;"><div class="loader-pulse"></div><div style="margin-top:20px; font-family:'Outfit', sans-serif; color:#64748b; font-size:0.9rem; letter-spacing:2px; font-weight:600; text-transform:uppercase; animation:fadeIn 1s infinite alternate;">Loading</div><style>.loader-pulse { position: relative; width: 60px; height: 60px; background: #2563eb; border-radius: 50%; animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; } .loader-pulse::after { content: ''; position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #fff; border-radius: 50%; animation: pulse-dot 1.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.4s infinite; } @keyframes pulse-ring { 0% { transform: scale(0.33); } 80%, 100% { opacity: 0; } } @keyframes pulse-dot { 0% { transform: scale(0.8); } 50% { transform: scale(1); } 100% { transform: scale(0.8); } } @keyframes fadeIn { from { opacity: 0.5; } to { opacity: 1; } }</style></div>`;
 if (!document.getElementById('site-preloader')) { document.body.insertAdjacentHTML('afterbegin', preloaderHTML); }
 
-function removePreloader() { 
-    if(typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 50 }); 
-    const loader = document.getElementById('site-preloader');
-    if(loader) { 
-        loader.style.opacity = '0'; 
-        setTimeout(() => loader.remove(), 500); 
-    }
-}
-window.addEventListener('load', removePreloader);
-setTimeout(removePreloader, 3000); // 3 second fallback
+// --- 2. PRO SCROLL PROGRESS BAR ---
+const scrollBar = document.createElement('div');
+scrollBar.id = 'pro-scroll-bar';
+Object.assign(scrollBar.style, { position: 'fixed', top: '0', left: '0', height: '4px', background: 'linear-gradient(90deg, #2563eb, #ec4899)', zIndex: '9999', width: '0%', transition: 'width 0.1s' });
+document.body.appendChild(scrollBar);
+window.addEventListener('scroll', () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    scrollBar.style.width = scrolled + "%";
+});
 
-// --- 2. ADVANCED VISITOR TRACKING (Non-blocking) ---
+// --- 3. ADVANCED VISITOR TRACKING ---
 if (!localStorage.getItem('admin_bypass')) {
     const visitRef = ref(db, 'site_stats/visits');
     runTransaction(visitRef, (currentVisits) => { return (currentVisits || 0) + 1; });
 
     if (!sessionStorage.getItem('logged_device')) {
-        fetch('https://ipwho.is/')
-            .then(res => res.json())
-            .then(data => {
-                const ua = navigator.userAgent;
-                let deviceType = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua) ? "Mobile" : "Desktop";
-                const success = data.success !== false;
-                push(ref(db, 'visit_logs'), { 
-                    ip: data.ip || 'Unknown', 
-                    city: success ? data.city : 'Unknown', 
-                    country: success ? data.country : 'Unknown', 
-                    device_type: deviceType, 
-                    time: new Date().toLocaleString() 
-                });
-                sessionStorage.setItem('logged_device', 'true');
-            }).catch(console.error);
+        fetch('https://ipwho.is/').then(response => response.json()).then(data => {
+            const ua = navigator.userAgent;
+            let deviceType = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua) ? "Mobile" : "Desktop";
+            const success = data.success !== false;
+            push(ref(db, 'visit_logs'), { ip: data.ip || 'Unknown', city: success ? data.city : 'Unknown City', country: success ? data.country : 'Unknown Country', country_code: success ? data.country_code.toLowerCase() : 'bd', org: success ? (data.connection ? data.connection.org : data.isp) : 'Unknown ISP', device_type: deviceType, raw_agent: ua, time: new Date().toLocaleString() });
+            sessionStorage.setItem('logged_device', 'true');
+        }).catch(() => {
+            push(ref(db, 'visit_logs'), { city: 'Unknown', country: 'Unknown', country_code: 'bd', device_type: "Unknown", raw_agent: navigator.userAgent, time: new Date().toLocaleString() });
+            sessionStorage.setItem('logged_device', 'true');
+        });
     }
 }
 
-// --- DYNAMIC DATA BINDING ---
-const setTxt = (id, val) => { const el = document.getElementById(id); if(el && val) el.innerText = val; };
-const setHref = (id, val) => { const el = document.getElementById(id); if(el && val) el.href = val; };
-
+// --- DYNAMIC SITE CONTENT ---
 onValue(ref(db, 'site_content'), (snap) => {
     const d = snap.val();
     if(d) {
+        const setTxt = (id, val) => { const el = document.getElementById(id); if(el && val) el.innerText = val; };
+        const setHref = (id, val) => { const el = document.getElementById(id); if(el && val) el.href = val; };
         if(d.hero) { setTxt('heroSubtitle', d.hero.subtitle); setTxt('heroTitle', d.hero.title); setTxt('heroDesc', d.hero.desc); }
         if(d.about) { setTxt('aboutTitle', d.about.title); setTxt('aboutSubtitle', d.about.subtitle); setTxt('aboutDesc', d.about.desc); setTxt('aboutLoc', d.about.location); setTxt('aboutPhone', d.about.phone); setTxt('aboutEmail', d.about.email); }
         if(d.links) { setHref('linkFB', d.links.fb); setHref('linkInsta', d.links.insta); setHref('linkWA', d.links.wa); }
     }
 });
 
-onValue(ref(db, 'hero'), snap => { if(snap.val()?.imageUrl) document.getElementById('dynamicHeroImg').src = snap.val().imageUrl; });
-onValue(ref(db, 'profile'), snap => { if(snap.val()?.imageUrl) document.getElementById('dynamicProfileImg').src = snap.val().imageUrl; });
+// --- STANDARD FEATURES ---
+onValue(ref(db, 'hero'), (snap) => { if(snap.val()?.imageUrl) document.getElementById('dynamicHeroImg').src = snap.val().imageUrl; });
+onValue(ref(db, 'profile'), (snap) => { if(snap.val()?.imageUrl) document.getElementById('dynamicProfileImg').src = snap.val().imageUrl; });
 
-// --- PROJECTS / CREATIONS INJECTION ---
-// Refactored to map DB data into modern project cards.
+// 1. HOME WORKS (3D Carousel Animation)
+const carousel = document.getElementById('carousel');
+if(carousel) { 
+    onValue(ref(db, 'home_works'), (snap) => { 
+        const data = snap.val(); 
+        carousel.innerHTML = ""; 
+        if(data) { 
+            const images = Object.values(data).reverse(); 
+            let activeIndex = 0;
+
+            images.forEach((item, index) => { 
+                const card = document.createElement('div'); 
+                card.className = "card"; 
+                card.innerHTML = `<img src="${item.url}" loading="lazy">`; 
+                
+                // Click logic: Bring to front or open full screen
+                card.addEventListener('click', () => {
+                    if (activeIndex === index) {
+                        // Clicked on the active card -> open lightbox
+                        window.openLightboxFromURL(item.url);
+                    } else {
+                        // Clicked on side card -> make it active
+                        activeIndex = index;
+                        updateCarousel();
+                    }
+                });
+
+                carousel.appendChild(card); 
+            }); 
+
+            const cards = carousel.querySelectorAll('.card');
+
+            function updateCarousel() {
+                const total = images.length;
+                cards.forEach((card, index) => {
+                    card.className = 'card'; // Reset classes
+                    if (index === activeIndex) {
+                        card.classList.add('active');
+                    } else if (index === (activeIndex - 1 + total) % total) {
+                        card.classList.add('prev1');
+                    } else if (index === (activeIndex + 1) % total) {
+                        card.classList.add('next1');
+                    } else if (index === (activeIndex - 2 + total) % total) {
+                        card.classList.add('prev2');
+                    } else if (index === (activeIndex + 2) % total) {
+                        card.classList.add('next2');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Initial render
+            updateCarousel();
+
+            // Auto-play interval
+            if (window.carouselInterval) clearInterval(window.carouselInterval);
+            window.carouselInterval = setInterval(() => {
+                activeIndex = (activeIndex + 1) % images.length;
+                updateCarousel();
+            }, 3500);
+
+            setTimeout(() => { if(typeof AOS !== 'undefined') AOS.refreshHard(); }, 600); 
+        } else {
+            carousel.innerHTML = "<p>No works found.</p>";
+        }
+    }); 
+}
+
+// 2. SDGs
+const sdgGrid = document.getElementById('sdgGrid');
+if(sdgGrid) { onValue(ref(db, 'sdgs'), (snap) => { const data = snap.val(); sdgGrid.innerHTML = ""; if(data) Object.values(data).reverse().forEach((item, index) => { sdgGrid.innerHTML += ` <a href="${item.link}" target="_blank" class="sdg-card" data-aos="fade-up" data-aos-delay="${(index % 3) * 100}"> <div class="sdg-img"><img src="${item.image}"></div> <div class="sdg-text"><h3>${item.title}</h3></div> </a>`; }); }); }
+
+// 3. MY CREATIONS
 const creationsBar = document.getElementById('creationsBar');
 if(creationsBar) { 
     onValue(ref(db, 'creations'), (snap) => { 
         const data = snap.val(); 
         if(data) {
             creationsBar.innerHTML = ""; 
-            Object.values(data).reverse().forEach((item, index) => { 
-                // NOTE: Using fallbacks for role/tools if they don't exist in your DB yet. Add them to Firebase!
-                const role = item.role || "Front-End Developer";
-                const tool = item.tool || "React / Web";
-                const desc = item.desc || "A professional digital solution focused on user experience and clean design.";
-
+            Object.values(data).reverse().forEach((item) => { 
                 creationsBar.innerHTML += `
-                <a href="${item.link}" target="_blank" class="glass-panel project-card" data-aos="fade-up" data-aos-delay="${index * 100}">
-                    <div class="project-img-wrapper">
-                        <img src="${item.image}" alt="${item.title} interface screenshot" loading="lazy">
-                    </div>
-                    <div class="project-info">
-                        <h3>${item.title}</h3>
-                        <p>${desc}</p>
-                        <div class="project-meta">
-                            <span class="badge-sm">${role}</span>
-                            <span class="badge-sm">${tool}</span>
-                        </div>
-                    </div>
+                <a href="${item.link}" target="_blank" class="creation-item">
+                    <img src="${item.image}" alt="${item.title}">
+                    <span>${item.title}</span>
                 </a>`; 
             }); 
         } 
     }); 
 }
 
-// --- GALLERY LOGIC ---
-const galleryGrid = document.getElementById('galleryGrid');
-let initialCount = 6; 
-let visibleCount = initialCount;
-
-if(galleryGrid) { 
-    onValue(ref(db, 'home_works'), (snap) => { 
-        const data = snap.val(); 
-        galleryGrid.innerHTML = ""; 
-        if(data) { 
-            const images = Object.values(data).reverse(); 
-            images.forEach((item, index) => { 
-                galleryGrid.innerHTML += `
-                <div class="gallery-item glass-panel" onclick="window.openLightboxFromURL('${item.url}')">
-                    <img src="${item.url}" loading="lazy" alt="Gallery Work">
-                    <div class="gallery-overlay"><i class="fas fa-expand"></i></div>
-                </div>`; 
-            }); 
-            initGalleryLogic(); 
+// 4. PHOTOGRAPHY
+const photoGrid = document.getElementById('photoGrid');
+if (photoGrid) {
+    onValue(ref(db, 'home_photography'), (snap) => {
+        const data = snap.val();
+        photoGrid.innerHTML = "";
+        if (data) {
+            const images = Object.values(data).reverse().slice(0, 3); 
+            images.forEach((item, index) => {
+                photoGrid.innerHTML += `
+                <div class="sdg-card" data-aos="fade-up" data-aos-delay="${index * 100}" onclick="window.openLightboxFromURL('${item.url}')" style="cursor: pointer;">
+                    <div class="sdg-img" style="height: 250px;">
+                        <img src="${item.url}" style="width: 100%; height: 100%; object-fit: cover; transition: 0.5s;">
+                    </div>
+                </div>`;
+            });
         } else {
-            galleryGrid.innerHTML = "<p class='text-light text-center w-100'>No works currently available.</p>";
+            photoGrid.innerHTML = `<p style="text-align:center; grid-column: 1/-1; color: #999;">Loading Photos...</p>`;
         }
-    }); 
+    });
 }
 
-function initGalleryLogic() { 
-    const items = document.querySelectorAll('.gallery-item'); 
-    const moreBtn = document.getElementById("view-more-btn"); 
-    items.forEach((item, i) => { if (i < initialCount) item.classList.add('visible'); }); 
-    if(items.length > initialCount && moreBtn) moreBtn.style.display = 'inline-flex'; 
-}
-
-// --- GLOBAL UTILITY FUNCTIONS ---
-window.loadMoreImages = () => { 
-    const items = document.querySelectorAll('.gallery-item'); 
-    let end = visibleCount + 3; 
-    for (let i = visibleCount; i < end && i < items.length; i++) { 
-        items[i].classList.add('visible'); 
-    } 
-    visibleCount = end; 
-    if (visibleCount >= items.length) document.getElementById("view-more-btn").style.display = 'none'; 
-    document.getElementById("view-less-btn").style.display = 'inline-flex'; 
-}
-
-window.viewLessImages = () => { 
-    const items = document.querySelectorAll('.gallery-item'); 
-    items.forEach((item, i) => { if (i >= initialCount) item.classList.remove('visible'); }); 
-    visibleCount = initialCount; 
-    document.getElementById("view-more-btn").style.display = 'inline-flex'; 
-    document.getElementById("view-less-btn").style.display = 'none'; 
-    document.getElementById('gallery').scrollIntoView({behavior: 'smooth'}); 
-}
-
-window.openLightboxFromURL = (url) => { 
-    const lb = document.getElementById('lightbox'); 
-    document.getElementById('lightbox-img').src = url; 
-    lb.classList.add('active'); 
-    document.body.style.overflow = 'hidden'; 
-}
-
-window.closeLightbox = (event) => { 
-    if (event.target.id === 'lightbox' || event.target.tagName === 'I') { 
-        document.getElementById('lightbox').classList.remove('active'); 
-        document.body.style.overflow = 'auto'; 
-    } 
-}
-
-window.openModal = (id) => { 
-    document.getElementById(id).style.display = 'flex'; 
-    document.body.style.overflow = 'hidden';
-}
-window.closeModal = (e, id) => { 
-    if (e.target.id === id || e.target.tagName === 'BUTTON') { 
-        document.getElementById(id).style.display = 'none'; 
-        document.body.style.overflow = 'auto';
-    } 
-}
-
+// --- HELPER FUNCTIONS ---
+window.openLightboxFromURL = (url) => { const lb = document.getElementById('lightbox'); document.getElementById('lightbox-img').src = url; lb.classList.add('active'); document.body.style.overflow = 'hidden'; }
+window.openModal = (modalId) => { document.getElementById(modalId).style.display = 'flex'; }
+window.closeModal = (event, modalId) => { if (event.target.id === modalId || event.target.tagName === 'BUTTON') { document.getElementById(modalId).style.display = 'none'; } }
+window.goToPage = (url) => { document.getElementById('pageTransition').classList.add('active'); setTimeout(() => { window.location.href = url; }, 500); }
+window.closeLightbox = (event) => { if (event.target.id === 'lightbox' || event.target.tagName === 'I') { document.getElementById('lightbox').classList.remove('active'); document.body.style.overflow = 'auto'; } }
 window.scrollToTop = () => { window.scrollTo({top: 0, behavior: 'smooth'}); }
-window.onscroll = () => { 
-    const btn = document.getElementById("backToTop"); 
-    if(btn) btn.style.display = (window.scrollY > 400) ? "flex" : "none"; 
+
+// --- FAST PRELOADER FIX ---
+function removePreloader() { 
+    if(typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true }); 
+
+    const loader = document.getElementById('site-preloader');
+    if(loader) { 
+        loader.style.opacity = '0'; 
+        setTimeout(() => loader.remove(), 200); 
+    }
+}
+
+if (document.readyState === 'complete') {
+    removePreloader();
+} else {
+    window.addEventListener('load', removePreloader);
+}
+setTimeout(removePreloader, 3000); // 3 second fallback force-remove
+
+window.onscroll = function() { const btn = document.getElementById("backToTop"); if(btn) btn.style.display = (window.scrollY > 300) ? "flex" : "none"; };
+
+window.triggerCameraAnim = (btn) => {
+    if (!btn.classList.contains('animate')) {
+        btn.classList.add('animate');
+        setTimeout(() => { window.goToPage('photography.html'); }, 3800);
+    }
 };
